@@ -2,6 +2,25 @@
 
 This is the changelog for [`remix-ssg`](https://github.com/kuboon/remix-kbn/tree/main/packages/ssg). It follows [semantic versioning](https://semver.org/).
 
+## 0.12.0
+
+- New entry point: **`@remix-kbn/ssg/base`**, exporting `normalizeBase`, `joinBase` and `stripBase` — the deploy-prefix helpers, and nothing else.
+
+  ```diff
+  - import { normalizeBase } from '@remix-kbn/ssg/site'
+  + import { normalizeBase } from '@remix-kbn/ssg/base'
+  ```
+
+  They are also still exported from `/site`, unchanged, so nothing has to move. What changes is what importing them costs a module the browser is given: `/site` is the Deno half of the framework — `createIslands`, the file trees, the loader — so reaching for it from a browser entrypoint pulls `node:fs`, `node:path` and a WebAssembly loader into the bundle, and the bundle then fails to load.
+
+  A site hits that the moment anything in a browser entrypoint imports the module its routes are built from, which is what client-side routing is: one route table, matched on both sides. The three helpers have no imports of their own, so from here they cost a browser nothing.
+
+## 0.11.0
+
+- Tracks the `remix@3.0.0-rc.3` package set: `@remix-run/ui` `^0.9.0` → `^0.10.0`. A minor rather than a patch because a `^0.10.0` range excludes 0.9, so leaving it would resolve a consumer a second copy of the UI runtime.
+
+  (Written after the fact — this release went out without an entry here.)
+
 ## 0.10.0
 
 - Moved to the `@remix-kbn` scope: this package is **`@remix-kbn/ssg`** from 0.10.0 on. The `remix-` prefix went with the move, because the scope says it now.

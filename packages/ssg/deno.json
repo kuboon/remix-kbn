@@ -1,11 +1,12 @@
 {
   "name": "@remix-kbn/ssg",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
     "./node": "./src/node.ts",
     "./site": "./src/site.ts",
+    "./base": "./src/base.ts",
     "./client": "./src/client.ts",
     "./build.ts": "./src/build.ts"
   },

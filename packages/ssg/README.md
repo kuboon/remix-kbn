@@ -366,6 +366,19 @@ the prefix; the build strips it back off when writing, so output always lands at
 
 The prefix is baked in when `router.ts` evaluates, so a process builds for one deploy target.
 
+`normalizeBase`, `joinBase` and `stripBase` are also exported from
+**`@remix-kbn/ssg/base`**, which is the import to reach for from anything the browser is given:
+
+```ts
+import { normalizeBase } from '@remix-kbn/ssg/base'
+```
+
+`/site` is the Deno half of this package — `createIslands`, the file trees, the loader — so
+importing from it in a browser entrypoint pulls `node:fs`, `node:path` and a WebAssembly loader
+into the bundle, and the bundle then fails to load. That is easy to miss, because it only bites
+once a browser module imports the file a site's routes are built from — which is what client-side
+routing is. `/base` has no imports at all.
+
 ## Related Packages
 
 - [`fetch-router`](https://github.com/remix-run/remix/tree/main/packages/fetch-router) - The router you prerender
