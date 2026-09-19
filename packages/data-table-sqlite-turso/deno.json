@@ -1,16 +1,16 @@
 {
   "name": "@remix-kbn/data-table-sqlite-turso",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
     "./cli": "./src/cli.ts"
   },
   "imports": {
-    "@remix-run/data-table": "npm:@remix-run/data-table@^0.5.0",
-    "@remix-run/data-table/cli": "npm:@remix-run/data-table@^0.5.0/cli",
-    "@remix-run/data-table/migrations/node": "npm:@remix-run/data-table@^0.5.0/migrations/node",
-    "@remix-run/data-table/sql-helpers": "npm:@remix-run/data-table@^0.5.0/sql-helpers",
+    "@remix-run/data-table": "npm:@remix-run/data-table@^0.6.0",
+    "@remix-run/data-table/cli": "npm:@remix-run/data-table@^0.6.0/cli",
+    "@remix-run/data-table/migrations/node": "npm:@remix-run/data-table@^0.6.0/migrations/node",
+    "@remix-run/data-table/sql-helpers": "npm:@remix-run/data-table@^0.6.0/sql-helpers",
     "@remix-run/assert": "npm:@remix-run/assert@^0.3.0",
     "@libsql/client": "npm:@libsql/client@^0.17.4",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd"

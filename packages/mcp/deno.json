@@ -1,12 +1,12 @@
 {
   "name": "@remix-kbn/mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "imports": {
     "@modelcontextprotocol/server": "npm:@modelcontextprotocol/server@^2.0.0",
     "@remix-run/assert": "npm:@remix-run/assert@^0.3.0",
-    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^0.21.0",
+    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^0.22.0",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
   },
   "tasks": {

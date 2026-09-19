@@ -1,6 +1,6 @@
 {
   "name": "@remix-kbn/ssg",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
@@ -16,8 +16,8 @@
     "@std/cli/parse-args": "jsr:@std/cli@^1/parse-args",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd",
     "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^0.22.0",
-    "@remix-run/ui": "npm:@remix-run/ui@^0.9.0",
-    "@remix-run/ui/server": "npm:@remix-run/ui@^0.9.0/server",
+    "@remix-run/ui": "npm:@remix-run/ui@^0.10.0",
+    "@remix-run/ui/server": "npm:@remix-run/ui@^0.10.0/server",
     "es-module-lexer": "npm:es-module-lexer@^2.3.0"
   },
   "tasks": {

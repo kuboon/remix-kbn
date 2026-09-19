@@ -5,7 +5,7 @@
   "exports": "./src/mod.ts",
   "imports": {
     "@remix-run/assert": "npm:@remix-run/assert@^0.3.0",
-    "@remix-run/ui": "npm:@remix-run/ui@^0.9.0",
+    "@remix-run/ui": "npm:@remix-run/ui@^0.10.0",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
   },
   "tasks": {

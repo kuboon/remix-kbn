@@ -6,6 +6,10 @@
     "./packages/ssg",
     "./packages/ui-pinch-pan"
   ],
+  "minimumDependencyAge": {
+    "age": "P1D",
+    "exclude": ["npm:@remix-run/*"]
+  },
   "fmt": {
     "singleQuote": true,
     "semiColons": false,
