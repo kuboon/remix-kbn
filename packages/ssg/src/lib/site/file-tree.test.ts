@@ -4,7 +4,6 @@ import { describe, it } from '@std/testing/bdd'
 
 import { createFileTree } from './file-tree.ts'
 import type { FileTransform } from './file-tree.ts'
-import { compose } from './middleware.ts'
 
 /** Stands in for a site's Markdown handling: claims `.md`, renders it, decides its route. */
 let markdown: FileTransform = {
@@ -153,27 +152,6 @@ describe('createFileTree', () => {
       assert.equal((await tree.fetch(new Request('http://localhost/later'))).status, 200)
     } finally {
       await cleanup()
-    }
-  })
-})
-
-describe('compose', () => {
-  it('passes a 404 along and stops at the first middleware that answers', async () => {
-    let pages = await makeTree({ 'index.md': 'home' })
-    let assets = await makeTree({ 'app.js': 'export default 1' })
-
-    try {
-      let handler = compose(
-        await createFileTree({ rootDir: pages.rootDir, transforms: [markdown] }),
-        await createFileTree({ rootDir: assets.rootDir, basePath: '/assets' }),
-      )
-
-      assert.equal((await handler.fetch(new Request('http://localhost/'))).status, 200)
-      assert.equal((await handler.fetch(new Request('http://localhost/assets/app.js'))).status, 200)
-      assert.equal((await handler.fetch(new Request('http://localhost/nope'))).status, 404)
-    } finally {
-      await pages.cleanup()
-      await assets.cleanup()
     }
   })
 })

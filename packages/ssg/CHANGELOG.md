@@ -2,6 +2,44 @@
 
 This is the changelog for [`remix-ssg`](https://github.com/kuboon/remix-kbn/tree/main/packages/ssg). It follows [semantic versioning](https://semver.org/).
 
+## 0.12.0
+
+Trimmed to what a site actually uses. [`remix3-ssg-gh-pages`](https://github.com/kuboon/remix3-ssg-gh-pages) is the only consumer, and it writes its own `router.ts` against `@remix-run/fetch-router` and `@remix-run/render-middleware` — so the half of this package that offered a second way to do that was never reached, and is gone.
+
+**Removed entry points.** `@remix-kbn/ssg` (the root), `@remix-kbn/ssg/node` and `@remix-kbn/ssg/client`.
+
+- The root exported `crawl`, `CrawlError`, `toOutput` and `rewriteExtensionsToJs` — the build's own internals, exposed for a caller who wanted to drive it by hand. `build.ts` still uses them; nothing else did.
+- `/node` exported `prerender` and `writeResult`, the batteries-included build for Node's `fs`. The build writes with `Deno`.
+- `/client` exported `island()`, a `clientEntry()` wrapper that resolved a logical island id through a map the server embedded. A site that names its client entries with `import.meta.url` — which is what `@remix-run/render-middleware` and an asset server already resolve — needs none of it.
+
+**Removed from `/site`.** `createIslands`, `htmlDocument`, `compose`, `serveAsHost`, plus the `buildSite` / `loadRouter` re-exports and the `SiteMiddleware` type.
+
+- `createIslands` compiled a directory of islands into code-split chunks. It is `createAssetServer` from [`@remix-kbn/assets-deno`](https://jsr.io/@remix-kbn/assets-deno) with a glob in front of it, and a site that calls that package directly gets to say which entrypoints it has.
+- `htmlDocument` rendered a node tree into an HTML `Response`. `context.render()` from `@remix-run/render-middleware` does that, and answers the hooks a client entry needs besides.
+- `compose` merged middlewares by passing a `404` along. A router already routes.
+- `serveAsHost` made the dev server resolve URLs the way the deploy would. It only worked for a site assembled out of `compose`, which is no longer a thing this package offers.
+
+With them go the dependencies they carried: `@remix-kbn/assets-deno`, `@remix-run/ui`, `@remix-run/ui/server` and `@remix-run/response/html` are no longer in this package's import map at all.
+
+**Still here, unchanged:** `createFileTree`, `githubPages`, `FileServerBehavior`, the deploy-prefix helpers, and `build.ts`. That is everything a site imports.
+
+**New entry point: `@remix-kbn/ssg/base`**, exporting `normalizeBase`, `joinBase` and `stripBase` — and nothing else.
+
+```diff
+- import { normalizeBase } from '@remix-kbn/ssg/site'
++ import { normalizeBase } from '@remix-kbn/ssg/base'
+```
+
+They are also still exported from `/site`, so nothing has to move. What changes is what importing them costs a module the browser is given: `/site` reaches `node:path` through the file tree and the loader, so a browser entrypoint that imports it pulls Node built-ins into the bundle, and the bundle then fails to load. A site hits that the moment anything in a browser entrypoint imports the module its routes are built from — which is what client-side routing is. `/base` has no imports of its own.
+
+**Renamed:** the type `SiteMiddleware` is `FileTree`, and lives beside `createFileTree` that returns it.
+
+## 0.11.0
+
+- Tracks the `remix@3.0.0-rc.3` package set: `@remix-run/ui` `^0.9.0` → `^0.10.0`. A minor rather than a patch because a `^0.10.0` range excludes 0.9, so leaving it would resolve a consumer a second copy of the UI runtime.
+
+  (Written after the fact — this release went out without an entry here.)
+
 ## 0.10.0
 
 - Moved to the `@remix-kbn` scope: this package is **`@remix-kbn/ssg`** from 0.10.0 on. The `remix-` prefix went with the move, because the scope says it now.

@@ -1,19 +1,38 @@
 /**
  * A directory, served — with transforms for the files that are not served verbatim.
  *
- * This is the counterpart to the asset server: same contract, different input. Where that one
- * compiles entrypoints into chunks, this one walks a directory and answers for what it finds. A
- * transform claims the files it knows how to render — Markdown, say — and everything else is served
- * as it sits.
- *
- * What this deliberately does not know is *how* to render anything. A transform arrives from the
- * site, which is what keeps a content format and its dependencies out of this package.
+ * A site's `router.ts` mounts one of these wherever it wants a directory answered from: the static
+ * files it ships as they sit, and anything a transform claims rendered on the way out. A transform
+ * arrives from the site, which is what keeps a content format and its dependencies out of this
+ * package — this module knows how to *find* a file, never how to render one.
  */
 
 import * as path from 'node:path'
 
 import { joinBase, normalizeBase } from './base.ts'
-import type { SiteMiddleware } from './middleware.ts'
+
+/** A directory, ready to answer requests under its mount point. */
+export interface FileTree {
+  /** Public mount point, without a trailing slash. `''` mounts at the root. */
+  readonly basePath: string
+  /**
+   * Answers one request.
+   *
+   * @param request The incoming request
+   * @returns The response, or a `404` when the tree serves nothing there
+   */
+  fetch(request: Request): Promise<Response>
+  /**
+   * Every path this tree can serve.
+   *
+   * Informational — the build is seeded with entry points and finds the rest by following links,
+   * so a page listed here that nothing links to is not part of the site. Useful for diagnostics,
+   * and for a caller that wants to seed something deliberately.
+   */
+  paths(): Iterable<string>
+  /** Rescans the directory. */
+  reload(): Promise<void>
+}
 
 /** A file in the tree, as a transform sees it. */
 export interface SourceFile {
@@ -58,9 +77,9 @@ export interface FileTransform {
    * Renders one file.
    *
    * A `Response`, so a transform says what it means in the vocabulary it is already holding —
-   * `htmlDocument(<html>…</html>)` and nothing else — instead of unwrapping one into a body and a
-   * content type for the tree to wrap up again. Status and headers are carried through; the tree
-   * reads the body once, keeps the bytes, and answers from those.
+   * whatever its renderer returns — instead of unwrapping one into a body and a content type for
+   * the tree to wrap up again. Status and headers are carried through; the tree reads the body
+   * once, keeps the bytes, and answers from those.
    *
    * @param file The file: its path in the tree, and where to read it
    * @returns The response to serve at this file's path
@@ -97,18 +116,19 @@ interface Rendered {
  * Serves a directory as part of a site.
  *
  * @param options Where the directory is, where it mounts, and how to render it
- * @returns A middleware, ready to {@link compose}
+ * @returns The tree, for a route to hand requests to
  *
  * @example
  * ```ts
- * compose(
- *   createFileTree({ rootDir: 'pages', basePath: base, transforms: [markdown] }),
- *   createFileTree({ rootDir: 'static', basePath: `${base}/static` }),
- *   islands,
- * )
+ * let staticFiles = await createFileTree({
+ *   rootDir: `${import.meta.dirname}/../client/static`,
+ *   basePath: `${base}/static`,
+ * })
+ *
+ * router.map(`${base}/static/*path`, ({ request }) => staticFiles.fetch(request))
  * ```
  */
-export async function createFileTree(options: FileTreeOptions): Promise<SiteMiddleware> {
+export async function createFileTree(options: FileTreeOptions): Promise<FileTree> {
   let rootDir = path.resolve(options.rootDir)
   let basePath = normalizeBase(options.basePath)
   let cacheControl = options.cacheControl ?? 'no-cache'
