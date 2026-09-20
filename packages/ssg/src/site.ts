@@ -1,32 +1,31 @@
 /**
- * The parts a static site is assembled from.
+ * The pieces a site's `router.ts` reaches for.
  *
- * A site writes its own `router.ts` and wires these together: islands compiled as one code-split
- * graph, a directory of pages served through the site's own transforms, a directory served
- * verbatim. What comes out is one handler — `deno serve router.ts` serves it, and the build crawls
- * it.
+ * This package does not supply a site's shape. A site writes an ordinary
+ * [`@remix-run/fetch-router`](https://github.com/remix-run/remix/tree/main/packages/fetch-router)
+ * router — its own routes, its own renderer, its own document shell — and exports it. `deno serve
+ * router.ts` runs that object as the dev server, and `jsr:@remix-kbn/ssg/build.ts` crawls the same
+ * object into static files. What is here is the two things that are awkward to write by hand:
+ * serving a directory, and knowing which file a static host answers a URL from.
  *
  * ```ts
  * // router.ts
- * import { compose, createFileTree, createIslands, normalizeBase } from '@remix-kbn/ssg/site'
- * import { markdown } from './transforms/markdown.tsx'
+ * import { createRouter } from '@remix-run/fetch-router'
+ * import { createFileTree, githubPages } from '@remix-kbn/ssg/site'
+ * import type { FileServerBehavior } from '@remix-kbn/ssg/site'
+ * import { normalizeBase } from '@remix-kbn/ssg/base'
  *
  * export const base = normalizeBase(Deno.env.get('BASE_URL'))
+ * export const entryPoints: readonly string[] = ['/']
+ * export const fileServer: FileServerBehavior = githubPages()
  *
- * let islands = await createIslands({ rootDir: 'islands', basePath: `${base}/assets` })
+ * let staticFiles = await createFileTree({ rootDir: 'static', basePath: `${base}/static` })
  *
- * export default serveAsHost(
- *   compose(
- *     await createFileTree({
- *       rootDir: 'pages',
- *       basePath: base,
- *       transforms: [markdown({ base, islandUrls: islands.urls })],
- *     }),
- *     await createFileTree({ rootDir: 'static', basePath: `${base}/static` }),
- *     islands,
- *   ),
- *   { base },
- * )
+ * const router = createRouter()
+ * router.get(`${base}/`, () => new Response('…', { headers: { 'content-type': 'text/html' } }))
+ * router.map(`${base}/static/*path`, ({ request }) => staticFiles.fetch(request))
+ *
+ * export default router
  * ```
  *
  * ```sh
@@ -34,22 +33,14 @@
  * deno run -c deno.json -P=build jsr:@remix-kbn/ssg/build.ts
  * ```
  *
- * What is deliberately absent: any notion of what a page is made of. No content model, no document
- * shell, no route table. A transform decides those, and it lives in the site.
+ * The four exports `router.ts` is read for — `default`, `base`, `entryPoints`, `fileServer` — are
+ * documented on `SiteRouter` in the build's own module; nothing but the build reads them.
+ *
+ * @module
  */
 
-export { compose } from './lib/site/middleware.ts'
-export type { SiteMiddleware } from './lib/site/middleware.ts'
-export { htmlDocument } from './lib/site/document.ts'
-export type { HtmlDocumentOptions } from './lib/site/document.ts'
 export { createFileTree } from './lib/site/file-tree.ts'
-export type { FileTransform, FileTreeOptions, SourceFile } from './lib/site/file-tree.ts'
-export { createIslands } from './lib/site/islands.ts'
-export type { Islands, IslandsOptions } from './lib/site/islands.ts'
+export type { FileTransform, FileTree, FileTreeOptions, SourceFile } from './lib/site/file-tree.ts'
+export { githubPages } from './lib/site/host.ts'
+export type { FileServerBehavior, Redirect } from './lib/site/host.ts'
 export { joinBase, normalizeBase, stripBase } from './lib/site/base.ts'
-export { githubPages, outputPathFor, serveAsHost } from './lib/site/host.ts'
-export type { FileServerBehavior, HostOptions, Redirect } from './lib/site/host.ts'
-export { buildSite } from './lib/site/build.ts'
-export type { BuildOptions, BuildStats } from './lib/site/build.ts'
-export { loadRouter } from './lib/site/load.ts'
-export type { SiteRouter } from './lib/site/load.ts'

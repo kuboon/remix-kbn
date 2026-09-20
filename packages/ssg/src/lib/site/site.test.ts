@@ -12,9 +12,9 @@ let routerUrl = new URL('./__fixtures__/site/router.ts', import.meta.url).href
 /**
  * Imports the fixture router under a given deploy prefix.
  *
- * The prefix is baked into the middlewares when the router module evaluates, so a second prefix
- * needs a second evaluation — hence the query. That is the real constraint, not a test artifact: a
- * site is built for one deploy target per process.
+ * The prefix is baked into the routes when the router module evaluates, so a second prefix needs a
+ * second evaluation — hence the query. That is the real constraint, not a test artifact: a site is
+ * built for one deploy target per process.
  */
 async function load(base?: string): Promise<SiteRouter> {
   if (base === undefined) Deno.env.delete('BASE_URL')
@@ -72,8 +72,8 @@ describe('buildSite', () => {
     let { files, cleanup } = await build()
 
     try {
-      // The layout links to `/release%20notes%20%232`. A host decodes before it looks, so the file
-      // has to carry the decoded name — `release%20notes%20%232.html` would never be found.
+      // The home page links to `/release%20notes%20%232`. A host decodes before it looks, so the
+      // file has to carry the decoded name — `release%20notes%20%232.html` would never be found.
       assert.ok(files.has('release notes #2.html'), `decoded file name, got ${[...files]}`)
     } finally {
       await cleanup()
@@ -84,10 +84,7 @@ describe('buildSite', () => {
     let { files, cleanup } = await build()
 
     try {
-      assert.ok(
-        !files.has('hidden/index.html'),
-        `hidden.md is not part of the site, got ${[...files]}`,
-      )
+      assert.ok(!files.has('hidden.html'), `hidden is not part of the site, got ${[...files]}`)
     } finally {
       await cleanup()
     }
@@ -97,80 +94,29 @@ describe('buildSite', () => {
     let { files, cleanup } = await build()
 
     try {
-      assert.ok(files.has('static/styles.css'), 'the stylesheet the layout links')
+      assert.ok(files.has('static/styles.css'), 'the stylesheet every page links')
     } finally {
       await cleanup()
     }
   })
 
-  it('writes every chunk, including the shared one only an import reaches', async () => {
-    let { files, cleanup } = await build()
-
-    try {
-      let chunks = [...files].filter((file) => file.startsWith('assets/'))
-
-      assert.ok(chunks.length >= 3, `entry chunks plus a shared one, got ${chunks}`)
-      assert.ok(chunks.some((chunk) => chunk.includes('chunk-')), `a shared chunk in ${chunks}`)
-    } finally {
-      await cleanup()
-    }
-  })
-
-  it('emits the module two islands share exactly once', async () => {
+  it('follows an import, so a module only another module names is written too', async () => {
     let { files, read, cleanup } = await build()
 
     try {
-      let bodies = await Promise.all(
-        [...files].filter((file) => file.endsWith('.js')).map((file) => read(file)),
-      )
-
-      assert.equal(
-        bodies.filter((body) => body.includes('fixture-click-store')).length,
-        1,
-        'exactly one chunk defines the shared store',
-      )
+      assert.ok(files.has('static/app.js'), 'the script a page loads')
+      assert.ok(files.has('static/shared.js'), `reached by import alone, got ${[...files]}`)
+      assert.ok((await read('static/shared.js')).includes('fixture-shared-module'))
     } finally {
       await cleanup()
     }
   })
 
-  it('embeds the island map and loads the chunks it names', async () => {
-    let { read, cleanup } = await build()
+  it('counts exactly the pages it reached, and no more', async () => {
+    let { stats, cleanup } = await build()
 
     try {
-      let html = await read('index.html')
-      let match = html.match(/id="rmx-ssg-islands"[^>]*>([^<]*)</)
-      assert.ok(match !== null, 'embeds the island map')
-
-      let map = JSON.parse(match[1].replaceAll('&quot;', '"')) as Record<string, string>
-      assert.ok(map.counter !== undefined && map.total !== undefined, 'maps both islands')
-
-      for (let url of Object.values(map)) {
-        assert.ok(html.includes(`src="${url}"`), `loads the chunk for ${url}`)
-      }
-    } finally {
-      await cleanup()
-    }
-  })
-
-  it('ships no JavaScript on a page with no islands', async () => {
-    let { read, cleanup } = await build()
-
-    try {
-      assert.ok(!(await read('about.html')).includes('<script'), 'about is Markdown, so it is text')
-    } finally {
-      await cleanup()
-    }
-  })
-
-  it('loads only the chunks a page places', async () => {
-    let { read, cleanup } = await build()
-
-    try {
-      let html = await read('blog/hello.html')
-
-      assert.ok(html.includes('src="/assets/counter.js"'), 'the island it places')
-      assert.ok(!html.includes('total.js'), `not the one it does not, got ${html}`)
+      assert.equal(stats.pages, 5, 'home, about, hello, release notes, orphan')
     } finally {
       await cleanup()
     }
@@ -182,11 +128,11 @@ describe('buildSite', () => {
     try {
       assert.ok(files.has('index.html'), 'output still lands at the root')
       assert.ok(files.has('orphan.html'), 'a prefixed entry point too')
-      assert.ok([...files].some((file) => file.startsWith('assets/')), 'chunks too')
+      assert.ok(files.has('static/app.js'), 'assets too')
 
       let html = await read('index.html')
       assert.ok(html.includes('href="/repo/static/styles.css"'), 'the stylesheet carries it')
-      assert.ok(html.includes('src="/repo/assets/'), 'chunk URLs carry it')
+      assert.ok(html.includes('src="/repo/static/app.js"'), 'the script URL carries it')
       assert.ok(html.includes('href="/repo"'), 'the root link drops the trailing slash')
     } finally {
       await cleanup()
@@ -202,10 +148,22 @@ describe('buildSite', () => {
       await cleanup()
     }
   })
+
+  it('reports the prefix and the output directory it built for', async () => {
+    let { stats, outDir, cleanup } = await build('/repo')
+
+    try {
+      assert.equal(stats.base, '/repo')
+      assert.equal(stats.outDir, outDir)
+      assert.ok(stats.assets > 0, 'the stylesheet and the two scripts')
+    } finally {
+      await cleanup()
+    }
+  })
 })
 
 describe('the router itself', () => {
-  it('serves pages, static files and chunks from one handler', async () => {
+  it('serves pages and static files from one handler', async () => {
     let router = await load()
 
     let page = await router.default.fetch(new Request('http://localhost/about'))
@@ -215,8 +173,9 @@ describe('the router itself', () => {
     let css = await router.default.fetch(new Request('http://localhost/static/styles.css'))
     assert.equal(css.status, 200)
 
-    let chunk = await router.default.fetch(new Request('http://localhost/assets/counter.js'))
-    assert.equal(chunk.status, 200)
+    let script = await router.default.fetch(new Request('http://localhost/static/app.js'))
+    assert.equal(script.status, 200)
+    assert.ok(script.headers.get('content-type')?.includes('javascript'))
 
     assert.equal((await router.default.fetch(new Request('http://localhost/nope'))).status, 404)
   })
