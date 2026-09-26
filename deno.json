@@ -2,6 +2,7 @@
   "workspace": [
     "./packages/assets-deno",
     "./packages/data-table-sqlite-turso",
+    "./packages/helper-agent",
     "./packages/mcp",
     "./packages/ssg",
     "./packages/ui-pinch-pan"

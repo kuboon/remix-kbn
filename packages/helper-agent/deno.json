@@ -1,0 +1,44 @@
+{
+  "name": "@remix-kbn/helper-agent",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    "./client": "./src/client.ts",
+    "./controller": "./src/controller.ts",
+    "./agent/claude": "./src/agent/claude.ts",
+    "./agent/dummy": "./src/agent/dummy.ts"
+  },
+  "imports": {
+    "@anthropic-ai/sdk": "npm:@anthropic-ai/sdk@^0.128.0",
+    "@remix-run/assert": "npm:@remix-run/assert@^0.3.0",
+    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^0.22.0",
+    "@remix-run/ui": "npm:@remix-run/ui@^0.10.0",
+    "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
+  },
+  "tasks": {
+    "test": "deno test --allow-read --allow-env --allow-net",
+    "check": "deno check src"
+  },
+  "publish": {
+    "include": [
+      "src",
+      "README.md",
+      "LICENSE",
+      "deno.json"
+    ],
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.test.tsx"
+    ]
+  },
+  "compilerOptions": {
+    "lib": [
+      "deno.ns",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "@remix-run/ui"
+  }
+}
