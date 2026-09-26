@@ -5,13 +5,13 @@ name: Release to JSR
 # required, but each JSR package must be linked to this repository at
 # https://jsr.io/<package>/publish for the OIDC publish to succeed.
 #
-# `packages/**` triggers the whole workflow and each job decides for itself: the
-# reusable workflow skips the publish when the package's `name@version` tag already
-# exists, so a change to one package runs every job and publishes only the ones
-# whose version moved. That is one fewer list to keep in step with `packages/`.
+# `packages/**` triggers the whole workflow and each matrix leg decides for itself:
+# the reusable workflow skips the publish when the package's `name@version` tag
+# already exists, so a change to one package runs every leg and publishes only the
+# ones whose version moved. That is one fewer list to keep in step with `packages/`.
 #
-# `packages/ui-pinch-pan` has no job here on purpose. `@kuboon/remix-ui-pinch-pan`
-# is archived on JSR with its only version yanked, so publishing to it fails with
+# `ui-pinch-pan` is not in the matrix on purpose. `@kuboon/remix-ui-pinch-pan` is
+# archived on JSR with its only version yanked, so publishing to it fails with
 # `packageArchived` and there is no one on the other side to publish to. It comes
 # back when the package moves to `@remix-kbn/ui-pinch-pan`.
 
@@ -26,42 +26,23 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  assets-deno:
+  publish:
+    # One leg per publishable package. `fail-fast: false` because the legs are
+    # independent releases: one package failing to publish is no reason to cancel
+    # another package's.
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - assets-deno
+          - data-table-sqlite-turso
+          - helper-agent
+          - mcp
+          - ssg
+    name: ${{ matrix.package }}
     permissions:
       contents: write # push the release tag
       id-token: write # OIDC token used to authenticate with JSR
     uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
     with:
-      directory: packages/assets-deno
-
-  data-table-sqlite-turso:
-    permissions:
-      contents: write # push the release tag
-      id-token: write # OIDC token used to authenticate with JSR
-    uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
-    with:
-      directory: packages/data-table-sqlite-turso
-
-  helper-agent:
-    permissions:
-      contents: write # push the release tag
-      id-token: write # OIDC token used to authenticate with JSR
-    uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
-    with:
-      directory: packages/helper-agent
-
-  mcp:
-    permissions:
-      contents: write # push the release tag
-      id-token: write # OIDC token used to authenticate with JSR
-    uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
-    with:
-      directory: packages/mcp
-
-  ssg:
-    permissions:
-      contents: write # push the release tag
-      id-token: write # OIDC token used to authenticate with JSR
-    uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
-    with:
-      directory: packages/ssg
+      directory: packages/${{ matrix.package }}
