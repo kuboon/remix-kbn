@@ -170,7 +170,9 @@ function Message(
 
     return (
       <>
-        {message.content !== '' ? <Bubble role='assistant'>{message.content}</Bubble> : null}
+        {message.content !== ''
+          ? <Bubble role='assistant'>{linkify(message.content)}</Bubble>
+          : null}
         {(message.toolCalls ?? []).map((call) => (
           <ToolLine key={call.id} call={call} result={results.get(call.id)} />
         ))}
@@ -203,6 +205,47 @@ function Bubble(
       {handle.props.children}
     </li>
   )
+}
+
+/**
+ * Turns the `http(s)` URLs in a reply into links.
+ *
+ * Support is largely pointing at things — the page with the setting on it, the article that
+ * explains it, the report a tool just drafted — and an assistant whose links arrive as text the
+ * person has to select and copy is an assistant that cannot finish its own sentences. The one
+ * unhelpful alternative a tool has is opening a tab itself, which by then has no user gesture
+ * behind it and is blocked.
+ *
+ * Only `http:` and `https:` match, which is what makes this safe to run over text a model wrote:
+ * a `javascript:` URL is not a URL here, it is a word.
+ *
+ * Trailing punctuation is left out of the href, because a URL at the end of a sentence is
+ * followed by the sentence's full stop and a bracketed one by its bracket, and neither belongs
+ * in the link.
+ *
+ * @param text The reply
+ * @returns The reply, with its URLs as anchors
+ */
+function linkify(text: string): RemixNode {
+  let parts: RemixNode[] = []
+  let at = 0
+
+  for (let match of text.matchAll(/https?:\/\/[^\s<>"']+/g)) {
+    let href = match[0].replace(/[.,;:!?)\]}'"]+$/, '')
+    let start = match.index
+
+    if (start > at) parts.push(text.slice(at, start))
+    parts.push(
+      <a key={`${start}`} href={href} target='_blank' rel='noopener noreferrer' mix={linkStyle}>
+        {href}
+      </a>,
+    )
+    at = start + href.length
+  }
+
+  if (parts.length === 0) return text
+  if (at < text.length) parts.push(text.slice(at))
+  return parts
 }
 
 /** Every tool result in the transcript, by the id of the call it answers. */
@@ -306,6 +349,11 @@ const userStyle = css({
 const assistantStyle = css({
   alignSelf: 'flex-start',
   border: '1px solid var(--helper-agent-border)',
+})
+
+const linkStyle = css({
+  color: 'inherit',
+  overflowWrap: 'anywhere',
 })
 
 const toolStyle = css({

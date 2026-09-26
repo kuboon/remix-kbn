@@ -235,6 +235,8 @@ Exposes `messages`, `status`, `error`, `busy`, and `send(text)`, `stop()`, `rese
 
 A `@remix-run/ui` component over a session. Props: `session`, `title`, `greeting`, `placeholder`, `onClose`.
 
+`http(s)` URLs in a reply are rendered as links, which is most of what support is: pointing at the page with the setting on it, the article that explains it, the report a tool just drafted. Nothing else is linkified — a `javascript:` URL is a word here, not a URL — and a tool should return a URL rather than try to open a tab, since by the time it runs there is no user gesture left and the browser blocks it.
+
 It styles itself from custom properties set on the panel — `--helper-agent-bg`, `--helper-agent-fg`, `--helper-agent-muted`, `--helper-agent-border`, `--helper-agent-accent`, `--helper-agent-on-accent`, `--helper-agent-radius`. Set them on the element you mount into, or on `:root`, and it follows the site.
 
 ### `/agent/claude`
