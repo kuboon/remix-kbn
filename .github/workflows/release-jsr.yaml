@@ -17,6 +17,7 @@ on:
     paths:
       - 'packages/assets-deno/**'
       - 'packages/data-table-sqlite-turso/**'
+      - 'packages/helper-agent/**'
       - 'packages/mcp/**'
       - 'packages/ssg/**'
       - '.github/workflows/release-jsr.yaml'
@@ -39,6 +40,14 @@ jobs:
     uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
     with:
       directory: packages/data-table-sqlite-turso
+
+  helper-agent:
+    permissions:
+      contents: write # push the release tag
+      id-token: write # OIDC token used to authenticate with JSR
+    uses: kuboon/workflows/.github/workflows/release-jsr.yml@main
+    with:
+      directory: packages/helper-agent
 
   mcp:
     permissions:
