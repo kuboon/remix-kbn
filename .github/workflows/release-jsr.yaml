@@ -5,6 +5,11 @@ name: Release to JSR
 # required, but each JSR package must be linked to this repository at
 # https://jsr.io/<package>/publish for the OIDC publish to succeed.
 #
+# `packages/**` triggers the whole workflow and each job decides for itself: the
+# reusable workflow skips the publish when the package's `name@version` tag already
+# exists, so a change to one package runs every job and publishes only the ones
+# whose version moved. That is one fewer list to keep in step with `packages/`.
+#
 # `packages/ui-pinch-pan` has no job here on purpose. `@kuboon/remix-ui-pinch-pan`
 # is archived on JSR with its only version yanked, so publishing to it fails with
 # `packageArchived` and there is no one on the other side to publish to. It comes
@@ -15,11 +20,7 @@ on:
     branches:
       - main
     paths:
-      - 'packages/assets-deno/**'
-      - 'packages/data-table-sqlite-turso/**'
-      - 'packages/helper-agent/**'
-      - 'packages/mcp/**'
-      - 'packages/ssg/**'
+      - 'packages/**'
       - '.github/workflows/release-jsr.yaml'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
