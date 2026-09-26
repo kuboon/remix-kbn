@@ -15,7 +15,7 @@ This is a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces
 | [`helper-agent`](./packages/helper-agent)                       | [`@remix-kbn/helper-agent`](https://jsr.io/@remix-kbn/helper-agent)                       | In-page support chat for a `remix/fetch-router` app — panel, route, and a Claude or scripted agent   |
 | [`mcp`](./packages/mcp)                                         | [`@remix-kbn/mcp`](https://jsr.io/@remix-kbn/mcp)                                         | Serve an MCP server from a `remix/fetch-router` route                                                |
 | [`ssg`](./packages/ssg)                                         | [`@remix-kbn/ssg`](https://jsr.io/@remix-kbn/ssg)                                         | Static site generation (prerender) for `remix/fetch-router`                                          |
-| [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | not published — see below                                                                 | Two-finger pinch and pan as a `@remix-run/ui` mixin                                                  |
+| [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | not published — see below                                                                 | Pinch, pan and wheel as a `@remix-run/ui` mixin — reading the gesture and running it, separately     |
 
 `ui-pinch-pan` has no published package, and did not move with the others. `@kuboon/remix-ui-pinch-pan`
 is archived on JSR with its only version yanked, so it is out of the release workflow and still

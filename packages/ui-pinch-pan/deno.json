@@ -1,6 +1,6 @@
 {
   "name": "@kuboon/remix-ui-pinch-pan",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "imports": {
