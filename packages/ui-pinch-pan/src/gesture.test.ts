@@ -7,8 +7,10 @@ import {
   anchorMatches,
   centroidOf,
   type GesturePointer,
+  panBy,
   type Point,
   spreadOf,
+  zoomAt,
 } from './gesture.ts'
 import { IDENTITY_TRANSFORM, type Transform } from './transform.ts'
 
@@ -67,6 +69,41 @@ describe('spreadOf', () => {
     let three = spreadOf([...twoFingers([0, 0], [120, 0]), { id: 3, x: 60, y: 0 }])
     closeTo(two, 60)
     closeTo(three, 40)
+  })
+})
+
+describe('zoomAt', () => {
+  it('holds the point it is given', () => {
+    let at: Point = { x: 120, y: 80 }
+    let from: Transform = { x: 30, y: -10, scale: 1.5 }
+    let before = contentUnder(from, at)
+
+    samePoint(contentUnder(zoomAt(from, at, 2.5), at), before)
+  })
+
+  it('multiplies the scale', () => {
+    closeTo(zoomAt(IDENTITY_TRANSFORM, { x: 0, y: 0 }, 3).scale, 3)
+  })
+
+  it('holds the point even at a limit, rather than sliding past it', () => {
+    let at: Point = { x: 200, y: 50 }
+    let from: Transform = { x: 0, y: 0, scale: 2 }
+    let before = contentUnder(from, at)
+
+    let zoomed = zoomAt(from, at, 10, { maxScale: 4 })
+
+    closeTo(zoomed.scale, 4)
+    samePoint(contentUnder(zoomed, at), before)
+  })
+
+  it('recovers from a scale CSS would have dropped', () => {
+    closeTo(zoomAt({ x: 0, y: 0, scale: 0 }, { x: 0, y: 0 }, 2).scale, 2)
+  })
+})
+
+describe('panBy', () => {
+  it('moves without scaling', () => {
+    assert.deepEqual(panBy({ x: 10, y: 20, scale: 3 }, -4, 6), { x: 6, y: 26, scale: 3 })
   })
 })
 
