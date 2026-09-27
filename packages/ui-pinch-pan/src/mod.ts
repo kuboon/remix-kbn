@@ -16,6 +16,10 @@
  * exported too, for a component that owns its own input handling and only wants the part that
  * decides where the content lands.
  *
+ * Renamed from `@kuboon/remix-ui-pinch-pan` at 0.2.0; the `remix-` prefix went with the move,
+ * because the scope says it now. That old name is archived on JSR with its only version yanked,
+ * so — unlike the rest of this repository — nothing resolves to it and nothing was left behind.
+ *
  * @module
  */
 

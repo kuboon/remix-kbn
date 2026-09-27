@@ -1,8 +1,20 @@
-# @kuboon/remix-ui-pinch-pan
+# `ui-pinch-pan` CHANGELOG
+
+This is the changelog for [`ui-pinch-pan`](https://github.com/kuboon/remix-kbn/tree/main/packages/ui-pinch-pan). It follows [semantic versioning](https://semver.org/).
 
 ## 0.2.0
 
-Split into the two halves it always was, and taught the wheel.
+Moved to the `@remix-kbn` scope, split into the two halves it always was, and taught the wheel.
+
+- Moved to the `@remix-kbn` scope: this package is **`@remix-kbn/ui-pinch-pan`** from 0.2.0 on. The
+  `remix-` prefix went with the move, because the scope says it now.
+
+  ```diff
+  - "@kuboon/remix-ui-pinch-pan": "jsr:@kuboon/remix-ui-pinch-pan@^0.1.0"
+  + "@remix-kbn/ui-pinch-pan": "jsr:@remix-kbn/ui-pinch-pan@^0.2.0"
+  ```
+
+  Unlike the other packages in this repository, there is nothing to forward from. `@kuboon/remix-ui-pinch-pan` is archived on JSR and its only version, 0.1.0, was yanked — so no release under the old name carries the usual "this is moving" notice, and none can be made. Nothing resolves to the old name today, so nothing breaks. 0.2.0 under the new name is the first version anyone can install, and the minor bump keeps 0.1.0 from naming two different things.
 
 - **Reading and running are separate.** `createGestureRecognizer()` takes pointers and wheels as
   plain numbers and answers with transforms — no element, no painting, no clock. `pinchPan()` is

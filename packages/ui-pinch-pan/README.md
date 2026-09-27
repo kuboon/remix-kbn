@@ -1,13 +1,17 @@
-# @kuboon/remix-ui-pinch-pan
+# ui-pinch-pan
+
+> Moved to the `@remix-kbn` scope at 0.2.0. `@kuboon/remix-ui-pinch-pan` is archived on JSR with
+> its only version yanked, so unlike this repository's other packages there is nothing to forward
+> from — and nothing that breaks.
 
 Pinch, pan and wheel as a [`@remix-run/ui`](https://www.npmjs.com/package/@remix-run/ui) mixin.
 
 ```sh
-deno add jsr:@kuboon/remix-ui-pinch-pan
+deno add jsr:@remix-kbn/ui-pinch-pan
 ```
 
 ```tsx
-import { pinchPan } from '@kuboon/remix-ui-pinch-pan'
+import { pinchPan } from '@remix-kbn/ui-pinch-pan'
 <div class='viewport' mix={[pinchPan({ maxScale: 6 })]}>
   <img src='/map.png' alt='' />
 </div>
@@ -79,7 +83,7 @@ no painting, no clock — so a component that gets its input from somewhere else
 directly, and its behaviour is testable without a browser.
 
 ```ts
-import { createGestureRecognizer } from '@kuboon/remix-ui-pinch-pan'
+import { createGestureRecognizer } from '@remix-kbn/ui-pinch-pan'
 
 let view = createGestureRecognizer({ maxScale: 8 })
 

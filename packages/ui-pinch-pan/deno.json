@@ -1,5 +1,5 @@
 {
-  "name": "@kuboon/remix-ui-pinch-pan",
+  "name": "@remix-kbn/ui-pinch-pan",
   "version": "0.2.0",
   "license": "MIT",
   "exports": "./src/mod.ts",
