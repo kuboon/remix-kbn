@@ -2,7 +2,7 @@
 
 `@remix-kbn`-scoped utility packages for [remix](https://github.com/remix-run/remix), published to [JSR](https://jsr.io/@remix-kbn).
 
-These were `@kuboon/remix-*` until the `@remix-kbn` scope existed. The `remix-` prefix went with the move, since the scope says it now — `@kuboon/remix-ssg` is `@remix-kbn/ssg`. Each old name carries a final release saying so and stays on JSR; nothing was unpublished, and each package's CHANGELOG records where its old series stopped.
+These were `@kuboon/remix-*` until the `@remix-kbn` scope existed. The `remix-` prefix went with the move, since the scope says it now — `@kuboon/remix-ssg` is `@remix-kbn/ssg`. Each old name carries a final release saying so and stays on JSR; nothing was unpublished, and each package's CHANGELOG records where its old series stopped. The exception is `ui-pinch-pan`: `@kuboon/remix-ui-pinch-pan` is archived on JSR with its only version yanked, so there is nothing to forward from and no release could be made under it — and nothing resolves to it either, so nothing breaks.
 
 This is a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces/). Each package lives under `packages/` with its own `deno.json`.
 
@@ -15,12 +15,7 @@ This is a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces
 | [`helper-agent`](./packages/helper-agent)                       | [`@remix-kbn/helper-agent`](https://jsr.io/@remix-kbn/helper-agent)                       | In-page support chat for a `remix/fetch-router` app — panel, route, and a Claude or scripted agent   |
 | [`mcp`](./packages/mcp)                                         | [`@remix-kbn/mcp`](https://jsr.io/@remix-kbn/mcp)                                         | Serve an MCP server from a `remix/fetch-router` route                                                |
 | [`ssg`](./packages/ssg)                                         | [`@remix-kbn/ssg`](https://jsr.io/@remix-kbn/ssg)                                         | Static site generation (prerender) for `remix/fetch-router`                                          |
-| [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | not published — see below                                                                 | Two-finger pinch and pan as a `@remix-run/ui` mixin                                                  |
-
-`ui-pinch-pan` has no published package, and did not move with the others. `@kuboon/remix-ui-pinch-pan`
-is archived on JSR with its only version yanked, so it is out of the release workflow and still
-carries its old name here. It gets its own pass later, as `@remix-kbn/ui-pinch-pan`; the source in
-this directory is what will be published then.
+| [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | [`@remix-kbn/ui-pinch-pan`](https://jsr.io/@remix-kbn/ui-pinch-pan)                       | Pinch, pan and wheel as a `@remix-run/ui` mixin — reading the gesture and running it, separately     |
 
 ## Claude Code plugins
 

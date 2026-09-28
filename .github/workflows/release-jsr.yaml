@@ -9,11 +9,6 @@ name: Release to JSR
 # the reusable workflow skips the publish when the package's `name@version` tag
 # already exists, so a change to one package runs every leg and publishes only the
 # ones whose version moved. That is one fewer list to keep in step with `packages/`.
-#
-# `ui-pinch-pan` is not in the matrix on purpose. `@kuboon/remix-ui-pinch-pan` is
-# archived on JSR with its only version yanked, so publishing to it fails with
-# `packageArchived` and there is no one on the other side to publish to. It comes
-# back when the package moves to `@remix-kbn/ui-pinch-pan`.
 
 on:
   push:
@@ -39,6 +34,7 @@ jobs:
           - helper-agent
           - mcp
           - ssg
+          - ui-pinch-pan
     name: ${{ matrix.package }}
     permissions:
       contents: write # push the release tag

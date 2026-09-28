@@ -102,14 +102,63 @@ export function anchorMatches(
 }
 
 /**
- * Computes the transform a gesture has reached.
+ * Scales the view about a point that must not move.
+ *
+ * The content point currently under `at` is put back under `at` at the new scale. This is the
+ * primitive behind every zoom in this package — a pinch zooms about the fingers' centroid, a wheel
+ * about the cursor — and the reason it takes a fixed point rather than a factor alone is that a
+ * zoom which does not hold something still is a zoom that slides the content away from whatever the
+ * person was looking at.
+ *
+ * Clamping happens to the scale *before* the translation is solved. Clamping the finished transform
+ * instead lets the content drift at the limit, because the translation was computed for a scale the
+ * view never reached.
+ *
+ * @param transform The transform to start from
+ * @param at The point to hold still, in content coordinates
+ * @param factor What to multiply the scale by
+ * @param limits Scale bounds
+ * @returns The scaled transform
+ */
+export function zoomAt(
+  transform: Transform,
+  at: Point,
+  factor: number,
+  limits: ScaleLimits = {},
+): Transform {
+  let previous = transform.scale > 0 ? transform.scale : 1
+  let scale = clampScale(previous * factor, limits)
+
+  // The content point under `at`, recovered by undoing the current transform.
+  let contentX = (at.x - transform.x) / previous
+  let contentY = (at.y - transform.y) / previous
+
+  return { x: at.x - contentX * scale, y: at.y - contentY * scale, scale }
+}
+
+/**
+ * Moves the view without scaling it.
+ *
+ * @param transform The transform to start from
+ * @param dx Horizontal movement in view pixels
+ * @param dy Vertical movement in view pixels
+ * @returns The moved transform
+ */
+export function panBy(transform: Transform, dx: number, dy: number): Transform {
+  return { x: transform.x + dx, y: transform.y + dy, scale: transform.scale }
+}
+
+/**
+ * Computes the transform a multi-finger gesture has reached.
  *
  * The content point that sat under the fingers' centroid when the gesture started is put back under
  * their centroid now. That single rule produces pan and zoom at once: moving both fingers moves the
  * centroid, spreading them changes the scale, and doing both does both.
  *
- * Clamping is applied to the scale *before* the translation is solved, so a pinch that runs into
- * `maxScale` stops growing without the content sliding out from under the fingers.
+ * Written as the two primitives above rather than as its own algebra, which is not a tidying: it
+ * says what a pinch *is*. Zoom about the anchor centroid by how much the fingers spread, then move
+ * by how far the centroid travelled — and a wheel is the same two operations with the cursor in
+ * place of the centroid.
  *
  * @param anchor What the gesture was anchored to
  * @param pointers Fingers currently down, in content coordinates
@@ -121,23 +170,11 @@ export function advanceGesture(
   pointers: readonly GesturePointer[],
   limits: ScaleLimits = {},
 ): Transform {
-  let previousScale = anchor.transform.scale
-  if (!(previousScale > 0)) previousScale = 1
-
-  let factor = 1
   let spread = spreadOf(pointers)
-  if (anchor.spread > 0 && spread > 0) factor = spread / anchor.spread
+  let factor = anchor.spread > 0 && spread > 0 ? spread / anchor.spread : 1
 
-  let scale = clampScale(previousScale * factor, limits)
-
-  // The content point under the anchor centroid, recovered by undoing the anchor transform.
-  let contentX = (anchor.centroid.x - anchor.transform.x) / previousScale
-  let contentY = (anchor.centroid.y - anchor.transform.y) / previousScale
+  let zoomed = zoomAt(anchor.transform, anchor.centroid, factor, limits)
 
   let centroid = centroidOf(pointers)
-  return {
-    x: centroid.x - contentX * scale,
-    y: centroid.y - contentY * scale,
-    scale,
-  }
+  return panBy(zoomed, centroid.x - anchor.centroid.x, centroid.y - anchor.centroid.y)
 }
