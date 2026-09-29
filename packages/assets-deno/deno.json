@@ -13,7 +13,7 @@
   "exports": "./src/mod.ts",
   "imports": {
     "@deno/loader": "jsr:@deno/loader@^0.5.0",
-    "@remix-run/assert": "npm:@remix-run/assert@^0.3.0",
+    "@remix-run/assert": "npm:@remix-run/assert@^0.3.1",
     "@std/encoding": "jsr:@std/encoding@^1",
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd",

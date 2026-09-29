@@ -8,8 +8,8 @@
     "./build.ts": "./src/build.ts"
   },
   "imports": {
-    "@remix-run/assert": "npm:@remix-run/assert@^0.3.0",
-    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^0.22.0",
+    "@remix-run/assert": "npm:@remix-run/assert@^0.3.1",
+    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^0.22.2",
     "@std/cli/parse-args": "jsr:@std/cli@^1/parse-args",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd",
     "es-module-lexer": "npm:es-module-lexer@^2.3.0"
