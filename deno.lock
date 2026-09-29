@@ -12,10 +12,10 @@
     "npm:@anthropic-ai/sdk@0.128": "0.128.0",
     "npm:@libsql/client@~0.17.4": "0.17.4",
     "npm:@modelcontextprotocol/server@2": "2.0.0",
-    "npm:@remix-run/assert@0.3": "0.3.0",
+    "npm:@remix-run/assert@~0.3.1": "0.3.1",
     "npm:@remix-run/data-table@0.6": "0.6.0",
-    "npm:@remix-run/fetch-router@0.22": "0.22.1",
-    "npm:@remix-run/ui@0.10": "0.10.0",
+    "npm:@remix-run/fetch-router@~0.22.2": "0.22.2",
+    "npm:@remix-run/ui@0.11": "0.11.0",
     "npm:cjs-module-lexer@^2.2.1": "2.2.1",
     "npm:es-module-lexer@^2.3.0": "2.3.2",
     "npm:es-module-lexer@^2.3.2": "2.3.2"
@@ -160,23 +160,23 @@
     "@neon-rs/load@0.0.4": {
       "integrity": "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="
     },
-    "@remix-run/assert@0.3.0": {
-      "integrity": "sha512-GBA9klvJdG5YSTwRNur54LQcfqDOtir+x1TDbv3dzB9FS2Li9CEiRLp1EpBcaYrj4ByO03WJCWFBiY8bTMy4vQ=="
+    "@remix-run/assert@0.3.1": {
+      "integrity": "sha512-+qJFbRzc3TeK5E5DUxuHVrukwpJjmpyPxOMjc371Z+X3zuyf11q/yvWZc3YJH/gOxll467azPmDs6PNgQk3Fgg=="
     },
     "@remix-run/data-table@0.6.0": {
       "integrity": "sha512-rVF3dg+t6DtQ1W+yRcuuTb6g7TA9qqw5/++ztAK7CFviG0H+1LZnoOQeUonDApXaU9eevCvrZwDrLgb5Gb1p+Q=="
     },
-    "@remix-run/fetch-router@0.22.1": {
-      "integrity": "sha512-pe0FcjhOU+ChzpRWQnMde9UPCrLWDbrHv3/mubcpf3fM3jFP95aS/C0ZqzPhbgHUf2iVu6R2XnCtRAgXTxMFIQ==",
+    "@remix-run/fetch-router@0.22.2": {
+      "integrity": "sha512-5XGOqEjkHvb7q4AWTnl3XC5qhjDTRmVFM4HVTutyzBJXIyGOCPox3nXvwuINovh53vkoSrpjBQ7PZd++kvaGRQ==",
       "dependencies": [
         "@remix-run/route-pattern"
       ]
     },
-    "@remix-run/route-pattern@0.24.1": {
-      "integrity": "sha512-HRee7tz2Ct7QdTQGDErHcVTAlXa5BBV6GOLEa/INw21ceTWTWlaU13FJupYVX0k1mh608rod880+SA5NlTPPfw=="
+    "@remix-run/route-pattern@0.25.0": {
+      "integrity": "sha512-RUXlEswF1mobTg+ZX5JSEmwz33VkFWPE24ccB1AFCHY+KZQMLCwIcYvV7eJlFHddPRLfSMCrkUa+88UCCdYC9Q=="
     },
-    "@remix-run/ui@0.10.0": {
-      "integrity": "sha512-mdrreloyguRGQFj2Cl5go8HAGlsTVi8CllxR2NDOKunACUw5ywhJ4GB/1FT5fuyHzrBv++lbgaDpcDQQPgFqUw==",
+    "@remix-run/ui@0.11.0": {
+      "integrity": "sha512-bjCHsXT5JoSUEickSIUmq9uPKWRHmhTXVNUHEbY+jt2ZfDqzgrI2L768sp93NGJSXFP60WA4bGkS7WF9xItmkw==",
       "dependencies": [
         "@types/dom-navigation"
       ]
@@ -272,7 +272,7 @@
           "jsr:@std/encoding@1",
           "jsr:@std/fs@^1.0.24",
           "jsr:@std/testing@1",
-          "npm:@remix-run/assert@0.3",
+          "npm:@remix-run/assert@~0.3.1",
           "npm:cjs-module-lexer@^2.2.1",
           "npm:es-module-lexer@^2.3.2"
         ]
@@ -281,7 +281,7 @@
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@libsql/client@~0.17.4",
-          "npm:@remix-run/assert@0.3",
+          "npm:@remix-run/assert@~0.3.1",
           "npm:@remix-run/data-table@0.6"
         ]
       },
@@ -289,33 +289,33 @@
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@anthropic-ai/sdk@0.128",
-          "npm:@remix-run/assert@0.3",
-          "npm:@remix-run/fetch-router@0.22",
-          "npm:@remix-run/ui@0.10"
+          "npm:@remix-run/assert@~0.3.1",
+          "npm:@remix-run/fetch-router@~0.22.2",
+          "npm:@remix-run/ui@0.11"
         ]
       },
       "packages/mcp": {
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@modelcontextprotocol/server@2",
-          "npm:@remix-run/assert@0.3",
-          "npm:@remix-run/fetch-router@0.22"
+          "npm:@remix-run/assert@~0.3.1",
+          "npm:@remix-run/fetch-router@~0.22.2"
         ]
       },
       "packages/ssg": {
         "dependencies": [
           "jsr:@std/cli@1",
           "jsr:@std/testing@1",
-          "npm:@remix-run/assert@0.3",
-          "npm:@remix-run/fetch-router@0.22",
+          "npm:@remix-run/assert@~0.3.1",
+          "npm:@remix-run/fetch-router@~0.22.2",
           "npm:es-module-lexer@^2.3.0"
         ]
       },
       "packages/ui-pinch-pan": {
         "dependencies": [
           "jsr:@std/testing@1",
-          "npm:@remix-run/assert@0.3",
-          "npm:@remix-run/ui@0.10"
+          "npm:@remix-run/assert@~0.3.1",
+          "npm:@remix-run/ui@0.11"
         ]
       }
     }

@@ -2,6 +2,17 @@
 
 This is the changelog for [`ui-pinch-pan`](https://github.com/kuboon/remix-kbn/tree/main/packages/ui-pinch-pan). It follows [semantic versioning](https://semver.org/).
 
+## 0.3.0
+
+Follows Remix v3 `rc.4`.
+
+- `@remix-run/ui` `^0.10.0` → `^0.11.0`. No code in this package changed: `ui@0.11.0` is additive
+  (it adds `diffElementAttributes` and tightens `clientEntry`'s props typing, neither of which this
+  package touches) and the mixin authoring API is byte-identical. The range moves anyway, because
+  `^0.11.0` does not include 0.10 — a consumer on rc.4 with this package left at `^0.10.0` would
+  resolve **two copies of the UI runtime**, and module-level state would then exist twice with no
+  error.
+
 ## 0.2.0
 
 Moved to the `@remix-kbn` scope, split into the two halves it always was, and taught the wheel.
