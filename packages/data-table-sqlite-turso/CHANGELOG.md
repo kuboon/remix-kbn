@@ -6,7 +6,8 @@ This is the changelog for [`data-table-sqlite-turso`](https://github.com/kuboon/
 
 Follows Remix v3 `3.0.0` (stable).
 
-- `@remix-run/*` ranges move to `^1.0.0`. No code in this package changed.
+- `@remix-run/*` ranges move to `^1.0.0`.
+- Importing the package root no longer loads the native `@libsql/client`. The CLI imported it at the top of its module, and the root re-exports the CLI, so an app that only wanted `createTursoDatabase` with `@libsql/client/web` still pulled the native build in. The CLI now imports it when it actually needs to build a client.
 
 ## 0.4.0
 
