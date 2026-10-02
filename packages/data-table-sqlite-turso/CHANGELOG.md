@@ -2,6 +2,13 @@
 
 This is the changelog for [`data-table-sqlite-turso`](https://github.com/kuboon/remix-kbn/tree/main/packages/data-table-sqlite-turso). It follows [semantic versioning](https://semver.org/).
 
+## 0.6.0
+
+Follows Remix v3 `3.0.0` (stable).
+
+- `@remix-run/*` ranges move to `^1.0.0`.
+- Importing the package root no longer loads the native `@libsql/client`. The CLI imported it at the top of its module, and the root re-exports the CLI, so an app that only wanted `createTursoDatabase` with `@libsql/client/web` still pulled the native build in. The CLI now imports it when it actually needs to build a client.
+
 ## 0.4.0
 
 - Moved to the `@remix-kbn` scope: this package is **`@remix-kbn/data-table-sqlite-turso`** from 0.4.0 on. The `remix-` prefix went with the move, because the scope says it now.

@@ -3,7 +3,7 @@
  *
  * Hand-written strings rather than a renderer: what is under test is the crawl, the output paths
  * and the deploy prefix, none of which care what produced the markup. A real site renders with
- * `@remix-run/ui` through `@remix-run/render-middleware`, and this package never sees either.
+ * `@remix-run/component` through `@remix-run/render-middleware`, and this package never sees either.
  */
 
 /** Wraps a body in a document that links the stylesheet, so every page has an asset reference. */

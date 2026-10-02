@@ -4,7 +4,7 @@
 > its only version yanked, so unlike this repository's other packages there is nothing to forward
 > from — and nothing that breaks.
 
-Pinch, pan and wheel as a [`@remix-run/ui`](https://www.npmjs.com/package/@remix-run/ui) mixin.
+Pinch, pan and wheel as a [`@remix-run/component`](https://www.npmjs.com/package/@remix-run/component) mixin.
 
 ```sh
 deno add jsr:@remix-kbn/ui-pinch-pan

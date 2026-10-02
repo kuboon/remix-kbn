@@ -2,6 +2,12 @@
 
 This is the changelog for [`remix-ssg`](https://github.com/kuboon/remix-kbn/tree/main/packages/ssg). It follows [semantic versioning](https://semver.org/).
 
+## 0.13.0
+
+Follows Remix v3 `3.0.0` (stable).
+
+- `@remix-run/*` ranges move to `^1.0.0`. No code in this package changed.
+
 ## 0.12.0
 
 Trimmed to what a site actually uses. [`remix3-ssg-gh-pages`](https://github.com/kuboon/remix3-ssg-gh-pages) is the only consumer, and it writes its own `router.ts` against `@remix-run/fetch-router` and `@remix-run/render-middleware` — so the half of this package that offered a second way to do that was never reached, and is gone.

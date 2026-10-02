@@ -2,7 +2,6 @@ import { mkdir } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import process from 'node:process'
 
-import { createClient } from '@libsql/client'
 import type { Client as TursoClient } from '@libsql/client'
 import type { MigrationDescriptor, Seed } from '@remix-run/data-table'
 import { runRemixDb } from '@remix-run/data-table/cli'
@@ -262,7 +261,10 @@ export async function runTursoDbCli(
 
   await ensureLocalDirectory(url)
 
-  let client = (options.createClient ?? createClient)({
+  // Loaded on demand: `@libsql/client` is the native build, and importing it eagerly would drag it
+  // into every app that only imports this package's database, including ones on the edge.
+  let createClient = options.createClient ?? (await import('@libsql/client')).createClient
+  let client = createClient({
     url,
     authToken: invocation.authToken ?? readEnv(env, DEFAULT_AUTH_TOKEN_ENV),
   })

@@ -10,7 +10,7 @@
  * @module
  */
 
-import { createMixin, type ElementProps, type MixinFactory } from '@remix-run/ui'
+import { createMixin, type ElementProps, type MixinFactory } from '@remix-run/component'
 
 import { cssTransform, type TransformApplier, type TransformTarget } from './apply.ts'
 import type { GesturePointer, Point } from './gesture.ts'

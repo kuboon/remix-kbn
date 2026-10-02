@@ -20,8 +20,8 @@ describe('candidatePathFor', () => {
 
   it('maps an npm specifier to an npm/ path', () => {
     assert.equal(
-      candidatePathFor('npm:/@remix-run/ui@0.4.0/jsx-runtime'),
-      'npm/@remix-run/ui@0.4.0/jsx-runtime',
+      candidatePathFor('npm:/@remix-run/component@0.4.0/jsx-runtime'),
+      'npm/@remix-run/component@0.4.0/jsx-runtime',
     )
   })
 

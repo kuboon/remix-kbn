@@ -67,7 +67,7 @@ Then point each entry's `<script>` at its public URL:
 Run with `--allow-read --allow-env --allow-net`. `--allow-net` is only needed when something is not already in the Deno cache. **No `--allow-run`** — nothing is shelled out to.
 
 Your `deno.json`'s `compilerOptions` are honored, so a JSX config like
-`{ "jsx": "react-jsx", "jsxImportSource": "@remix-run/ui" }` needs no repeating here.
+`{ "jsx": "react-jsx", "jsxImportSource": "@remix-run/component" }` needs no repeating here.
 
 ### Naming the entrypoints
 

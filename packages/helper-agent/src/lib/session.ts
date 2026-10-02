@@ -16,7 +16,7 @@
  * @module
  */
 
-import { TypedEventTarget } from '@remix-run/ui'
+import { TypedEventTarget } from '@remix-run/component'
 
 import type { AgentEvent, ChatMessage, ToolCall, ToolResult, ToolSchema } from './protocol.ts'
 import { decodeEvents, EVENT_STREAM_CONTENT_TYPE } from './protocol.ts'

@@ -12,10 +12,10 @@
     "npm:@anthropic-ai/sdk@0.128": "0.128.0",
     "npm:@libsql/client@~0.17.4": "0.17.4",
     "npm:@modelcontextprotocol/server@2": "2.0.0",
-    "npm:@remix-run/assert@~0.3.1": "0.3.1",
-    "npm:@remix-run/data-table@0.6": "0.6.0",
-    "npm:@remix-run/fetch-router@~0.22.2": "0.22.2",
-    "npm:@remix-run/ui@0.11": "0.11.0",
+    "npm:@remix-run/assert@1": "1.0.0",
+    "npm:@remix-run/component@1": "1.0.0",
+    "npm:@remix-run/data-table@1": "1.0.0",
+    "npm:@remix-run/fetch-router@1": "1.0.0",
     "npm:cjs-module-lexer@^2.2.1": "2.2.1",
     "npm:es-module-lexer@^2.3.0": "2.3.2",
     "npm:es-module-lexer@^2.3.2": "2.3.2"
@@ -160,26 +160,26 @@
     "@neon-rs/load@0.0.4": {
       "integrity": "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="
     },
-    "@remix-run/assert@0.3.1": {
-      "integrity": "sha512-+qJFbRzc3TeK5E5DUxuHVrukwpJjmpyPxOMjc371Z+X3zuyf11q/yvWZc3YJH/gOxll467azPmDs6PNgQk3Fgg=="
+    "@remix-run/assert@1.0.0": {
+      "integrity": "sha512-ygVYpSz7uc7Wg72Ty0rN29J9Qtna30BVwwHF8K/M8WcSt28peoe8jRAAivUQe+7haSizemwUL3E7UxTCBycW9w=="
     },
-    "@remix-run/data-table@0.6.0": {
-      "integrity": "sha512-rVF3dg+t6DtQ1W+yRcuuTb6g7TA9qqw5/++ztAK7CFviG0H+1LZnoOQeUonDApXaU9eevCvrZwDrLgb5Gb1p+Q=="
+    "@remix-run/component@1.0.0": {
+      "integrity": "sha512-89stfiyRE+99sQDbX5Hu56ro44a15Mhh7OYev3lJ+7ZJgOLRjrjymahzS0p4A6J19e4U5rOBUqa8BJvUHm0eig==",
+      "dependencies": [
+        "@types/dom-navigation"
+      ]
     },
-    "@remix-run/fetch-router@0.22.2": {
-      "integrity": "sha512-5XGOqEjkHvb7q4AWTnl3XC5qhjDTRmVFM4HVTutyzBJXIyGOCPox3nXvwuINovh53vkoSrpjBQ7PZd++kvaGRQ==",
+    "@remix-run/data-table@1.0.0": {
+      "integrity": "sha512-aFY0MxCH7NZp8HEJttGXsMQhdL5XeK9s34hW5stGdFfRST8WbGTApHMq78jahMBO6LaWgP/PNZRk9Mjr1GUYoA=="
+    },
+    "@remix-run/fetch-router@1.0.0": {
+      "integrity": "sha512-rvtg1Gtz1oJKL4nk1Jlp5Qh0auTYQBrcaGr7dtSse6iERcEWdRFVqtXWuNYXuwJwXieJE179ZKZRxXEyyTq9og==",
       "dependencies": [
         "@remix-run/route-pattern"
       ]
     },
-    "@remix-run/route-pattern@0.25.0": {
-      "integrity": "sha512-RUXlEswF1mobTg+ZX5JSEmwz33VkFWPE24ccB1AFCHY+KZQMLCwIcYvV7eJlFHddPRLfSMCrkUa+88UCCdYC9Q=="
-    },
-    "@remix-run/ui@0.11.0": {
-      "integrity": "sha512-bjCHsXT5JoSUEickSIUmq9uPKWRHmhTXVNUHEbY+jt2ZfDqzgrI2L768sp93NGJSXFP60WA4bGkS7WF9xItmkw==",
-      "dependencies": [
-        "@types/dom-navigation"
-      ]
+    "@remix-run/route-pattern@1.0.0": {
+      "integrity": "sha512-EsI8J5AcDpnV76lGcpwPCqCN1Vj7X2eNPqgUr+RjInTsm4iTnrGzn0iIUxpUjQ5/Ba1cAd8CMMbsA2bjEjZiyQ=="
     },
     "@stablelib/base64@1.0.1": {
       "integrity": "sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ=="
@@ -272,7 +272,7 @@
           "jsr:@std/encoding@1",
           "jsr:@std/fs@^1.0.24",
           "jsr:@std/testing@1",
-          "npm:@remix-run/assert@~0.3.1",
+          "npm:@remix-run/assert@1",
           "npm:cjs-module-lexer@^2.2.1",
           "npm:es-module-lexer@^2.3.2"
         ]
@@ -281,41 +281,41 @@
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@libsql/client@~0.17.4",
-          "npm:@remix-run/assert@~0.3.1",
-          "npm:@remix-run/data-table@0.6"
+          "npm:@remix-run/assert@1",
+          "npm:@remix-run/data-table@1"
         ]
       },
       "packages/helper-agent": {
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@anthropic-ai/sdk@0.128",
-          "npm:@remix-run/assert@~0.3.1",
-          "npm:@remix-run/fetch-router@~0.22.2",
-          "npm:@remix-run/ui@0.11"
+          "npm:@remix-run/assert@1",
+          "npm:@remix-run/component@1",
+          "npm:@remix-run/fetch-router@1"
         ]
       },
       "packages/mcp": {
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@modelcontextprotocol/server@2",
-          "npm:@remix-run/assert@~0.3.1",
-          "npm:@remix-run/fetch-router@~0.22.2"
+          "npm:@remix-run/assert@1",
+          "npm:@remix-run/fetch-router@1"
         ]
       },
       "packages/ssg": {
         "dependencies": [
           "jsr:@std/cli@1",
           "jsr:@std/testing@1",
-          "npm:@remix-run/assert@~0.3.1",
-          "npm:@remix-run/fetch-router@~0.22.2",
+          "npm:@remix-run/assert@1",
+          "npm:@remix-run/fetch-router@1",
           "npm:es-module-lexer@^2.3.0"
         ]
       },
       "packages/ui-pinch-pan": {
         "dependencies": [
           "jsr:@std/testing@1",
-          "npm:@remix-run/assert@~0.3.1",
-          "npm:@remix-run/ui@0.11"
+          "npm:@remix-run/assert@1",
+          "npm:@remix-run/component@1"
         ]
       }
     }

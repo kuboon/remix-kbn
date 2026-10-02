@@ -26,7 +26,7 @@ It is three pieces that snap together and can each be replaced:
 This package is published to [JSR](https://jsr.io/@remix-kbn/helper-agent):
 
 ```sh
-deno add jsr:@remix-kbn/helper-agent npm:@remix-run/fetch-router npm:@remix-run/ui
+deno add jsr:@remix-kbn/helper-agent npm:@remix-run/fetch-router npm:@remix-run/component
 deno add npm:@anthropic-ai/sdk   # only if you serve agent/claude
 ```
 
@@ -34,7 +34,7 @@ For Node:
 
 ```sh
 npx jsr add @remix-kbn/helper-agent
-npm install @remix-run/fetch-router @remix-run/ui @anthropic-ai/sdk
+npm install @remix-run/fetch-router @remix-run/component @anthropic-ai/sdk
 ```
 
 ## Usage
@@ -78,7 +78,7 @@ document.querySelector('#help')!.addEventListener('click', () => {
 
 Open it once and keep the handle: the conversation lives in the session behind it, so `show()` and `close()` are a toggle and a second `openHelperAgent()` is a second conversation.
 
-For a chat inside your own layout, take the two pieces under it instead — `HelperAgentSession` is the conversation on its own, and `HelperAgentChat` is a `@remix-run/ui` component over one:
+For a chat inside your own layout, take the two pieces under it instead — `HelperAgentSession` is the conversation on its own, and `HelperAgentChat` is a `@remix-run/component` component over one:
 
 ```tsx
 import { HelperAgentChat, HelperAgentSession } from '@remix-kbn/helper-agent/client'
@@ -233,7 +233,7 @@ Exposes `messages`, `status`, `error`, `busy`, and `send(text)`, `stop()`, `rese
 
 #### `HelperAgentChat`
 
-A `@remix-run/ui` component over a session. Props: `session`, `title`, `greeting`, `placeholder`, `onClose`.
+A `@remix-run/component` component over a session. Props: `session`, `title`, `greeting`, `placeholder`, `onClose`.
 
 `http(s)` URLs in a reply are rendered as links, which is most of what support is: pointing at the page with the setting on it, the article that explains it, the report a tool just drafted. Nothing else is linkified — a `javascript:` URL is a word here, not a URL — and a tool should return a URL rather than try to open a tab, since by the time it runs there is no user gesture left and the browser blocks it.
 
@@ -285,7 +285,7 @@ One turn can hold several assistant messages, because a tool the controller runs
 ## Related Packages
 
 - [`fetch-router`](https://github.com/remix-run/remix/tree/main/packages/fetch-router) — the router the controller mounts on
-- [`@remix-run/ui`](https://github.com/remix-run/remix/tree/main/packages/ui) — what the panel is written in
+- [`@remix-run/component`](https://github.com/remix-run/remix/tree/main/packages/ui) — what the panel is written in
 - [`@anthropic-ai/sdk`](https://www.npmjs.com/package/@anthropic-ai/sdk) — what `agent/claude` talks through
 
 ## License

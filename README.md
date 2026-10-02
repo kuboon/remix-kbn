@@ -8,14 +8,14 @@ This is a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces
 
 ## Packages
 
-| Package                                                         | JSR                                                                                       | Description                                                                                          |
-| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [`assets-deno`](./packages/assets-deno)                         | [`@remix-kbn/assets-deno`](https://jsr.io/@remix-kbn/assets-deno)                         | JSR-capable on-demand asset server for `remix/fetch-router`                                          |
-| [`data-table-sqlite-turso`](./packages/data-table-sqlite-turso) | [`@remix-kbn/data-table-sqlite-turso`](https://jsr.io/@remix-kbn/data-table-sqlite-turso) | Async Turso / libSQL database for `@remix-run/data-table`, with a migration CLI replacing `remix db` |
-| [`helper-agent`](./packages/helper-agent)                       | [`@remix-kbn/helper-agent`](https://jsr.io/@remix-kbn/helper-agent)                       | In-page support chat for a `remix/fetch-router` app — panel, route, and a Claude or scripted agent   |
-| [`mcp`](./packages/mcp)                                         | [`@remix-kbn/mcp`](https://jsr.io/@remix-kbn/mcp)                                         | Serve an MCP server from a `remix/fetch-router` route                                                |
-| [`ssg`](./packages/ssg)                                         | [`@remix-kbn/ssg`](https://jsr.io/@remix-kbn/ssg)                                         | Static site generation (prerender) for `remix/fetch-router`                                          |
-| [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | [`@remix-kbn/ui-pinch-pan`](https://jsr.io/@remix-kbn/ui-pinch-pan)                       | Pinch, pan and wheel as a `@remix-run/ui` mixin — reading the gesture and running it, separately     |
+| Package                                                         | JSR                                                                                       | Description                                                                                             |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [`assets-deno`](./packages/assets-deno)                         | [`@remix-kbn/assets-deno`](https://jsr.io/@remix-kbn/assets-deno)                         | JSR-capable on-demand asset server for `remix/fetch-router`                                             |
+| [`data-table-sqlite-turso`](./packages/data-table-sqlite-turso) | [`@remix-kbn/data-table-sqlite-turso`](https://jsr.io/@remix-kbn/data-table-sqlite-turso) | Async Turso / libSQL database for `@remix-run/data-table`, with a migration CLI replacing `remix db`    |
+| [`helper-agent`](./packages/helper-agent)                       | [`@remix-kbn/helper-agent`](https://jsr.io/@remix-kbn/helper-agent)                       | In-page support chat for a `remix/fetch-router` app — panel, route, and a Claude or scripted agent      |
+| [`mcp`](./packages/mcp)                                         | [`@remix-kbn/mcp`](https://jsr.io/@remix-kbn/mcp)                                         | Serve an MCP server from a `remix/fetch-router` route                                                   |
+| [`ssg`](./packages/ssg)                                         | [`@remix-kbn/ssg`](https://jsr.io/@remix-kbn/ssg)                                         | Static site generation (prerender) for `remix/fetch-router`                                             |
+| [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | [`@remix-kbn/ui-pinch-pan`](https://jsr.io/@remix-kbn/ui-pinch-pan)                       | Pinch, pan and wheel as a `@remix-run/component` mixin — reading the gesture and running it, separately |
 
 ## Claude Code plugins
 
