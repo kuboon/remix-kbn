@@ -17,7 +17,7 @@
  * @module
  */
 
-import { createElement, createRoot } from '@remix-run/ui'
+import { createElement, createRoot } from '@remix-run/component'
 
 import { HelperAgentChat } from './chat.tsx'
 import { HelperAgentSession } from './session.ts'

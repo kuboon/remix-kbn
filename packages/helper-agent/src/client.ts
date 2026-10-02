@@ -3,7 +3,7 @@
  *
  * {@link openHelperAgent} is the one-line version — a `<dialog>` with the chat in it, for a host
  * whose plan is "press this button and the helper opens". Under it, {@link HelperAgentSession} is
- * the conversation on its own, and {@link HelperAgentChat} is a `@remix-run/ui` component over one;
+ * the conversation on its own, and {@link HelperAgentChat} is a `@remix-run/component` component over one;
  * an app that wants the chat inside its own layout, or drawn its own way, takes those two instead.
  *
  * The transport is where the interesting choice is. It defaults to the network, and it takes a

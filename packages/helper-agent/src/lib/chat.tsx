@@ -1,7 +1,7 @@
 /**
  * The chat panel.
  *
- * A `@remix-run/ui` component over a {@link HelperAgentSession}, and nothing more: it subscribes to
+ * A `@remix-run/component` component over a {@link HelperAgentSession}, and nothing more: it subscribes to
  * the session's `change` event, renders the transcript it exposes, and calls `send`. All of the
  * conversation's behaviour is next door in `session.ts`, so an app that wants a chat of its own
  * shape takes the session and leaves this behind.
@@ -20,8 +20,8 @@
  * @module
  */
 
-import { css, on, ref } from '@remix-run/ui'
-import type { Handle, RemixNode } from '@remix-run/ui'
+import { css, on, ref } from '@remix-run/component'
+import type { Handle, RemixNode } from '@remix-run/component'
 
 import type { ChatMessage, ToolCall, ToolResult } from './protocol.ts'
 import type { HelperAgentSession } from './session.ts'

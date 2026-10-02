@@ -1,6 +1,6 @@
 {
   "name": "@remix-kbn/assets-deno",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "license": "MIT",
   "compilerOptions": {
     "lib": [
@@ -13,7 +13,7 @@
   "exports": "./src/mod.ts",
   "imports": {
     "@deno/loader": "jsr:@deno/loader@^0.5.0",
-    "@remix-run/assert": "npm:@remix-run/assert@^0.3.1",
+    "@remix-run/assert": "npm:@remix-run/assert@^1.0.0",
     "@std/encoding": "jsr:@std/encoding@^1",
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd",

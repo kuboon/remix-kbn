@@ -118,7 +118,7 @@ export function candidatePathFor(
   }
 
   if (specifier.startsWith('npm:')) {
-    // `npm:/@remix-run/ui@0.4.0/jsx-runtime` and the bare `npm:@remix-run/ui@0.4.0` both land here.
+    // `npm:/@remix-run/component@0.4.0/jsx-runtime` and the bare `npm:@remix-run/component@0.4.0` both land here.
     return `npm/${toJsExtension(sanitizeSegments(specifier.slice('npm:'.length)))}`
   }
 

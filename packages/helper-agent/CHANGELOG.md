@@ -2,6 +2,13 @@
 
 This is the changelog for [`helper-agent`](https://github.com/kuboon/remix-kbn/tree/main/packages/helper-agent). It follows [semantic versioning](https://semver.org/).
 
+## 0.3.0
+
+Follows Remix v3 `3.0.0` (stable).
+
+- `@remix-run/ui` `^0.11.0` → `@remix-run/component` `^1.0.0`. The component runtime moved back out of `@remix-run/ui` in Remix 3.0.0, so the imports and `jsxImportSource` follow. No other code changed; the symbols this package uses are the same in `component@1.0.0`.
+- The other `@remix-run/*` ranges move to `^1.0.0`.
+
 ## 0.2.0
 
 Follows Remix v3 `rc.4`.

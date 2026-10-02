@@ -2,6 +2,12 @@
 
 This is the changelog for [`remix-mcp`](https://github.com/kuboon/remix-kbn/tree/main/packages/mcp). It follows [semantic versioning](https://semver.org/).
 
+## 0.4.0
+
+Follows Remix v3 `3.0.0` (stable).
+
+- `@remix-run/*` ranges move to `^1.0.0`. No code in this package changed.
+
 ## 0.2.0
 
 - Moved to the `@remix-kbn` scope: this package is **`@remix-kbn/mcp`** from 0.2.0 on. The `remix-` prefix went with the move, because the scope says it now.

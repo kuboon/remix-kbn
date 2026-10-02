@@ -1,5 +1,5 @@
 /**
- * Pinch, pan and wheel as a `@remix-run/ui` mixin — in two halves that can be taken apart.
+ * Pinch, pan and wheel as a `@remix-run/component` mixin — in two halves that can be taken apart.
  *
  * {@link pinchPan} is the whole public surface for normal use: put it on the element that should
  * listen and its content moves. Behind it the package is split where the two hard parts are, and
