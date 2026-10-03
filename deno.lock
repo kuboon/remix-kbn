@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@deno/installer-shell-setup@*": "0.3.4",
     "jsr:@deno/loader@0.5": "0.5.0",
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/cli@1": "1.0.32",
@@ -21,6 +22,9 @@
     "npm:es-module-lexer@^2.3.2": "2.3.2"
   },
   "jsr": {
+    "@deno/installer-shell-setup@0.3.4": {
+      "integrity": "48665d1a737d487cce6874bc97bba70a5aeffa7053aca3f60df93c6fab8963b4"
+    },
     "@deno/loader@0.5.0": {
       "integrity": "a6d94408de5e6bacac404f8f6963c8b8cc278cfd1a878aa2f06b34a083d6bfee"
     },
@@ -275,6 +279,13 @@
           "npm:@remix-run/assert@1",
           "npm:cjs-module-lexer@^2.2.1",
           "npm:es-module-lexer@^2.3.2"
+        ]
+      },
+      "packages/data-table-d1": {
+        "dependencies": [
+          "jsr:@std/testing@1",
+          "npm:@remix-run/assert@1",
+          "npm:@remix-run/data-table@1"
         ]
       },
       "packages/data-table-sqlite-turso": {

@@ -1,6 +1,7 @@
 {
   "workspace": [
     "./packages/assets-deno",
+    "./packages/data-table-d1",
     "./packages/data-table-sqlite-turso",
     "./packages/helper-agent",
     "./packages/mcp",
