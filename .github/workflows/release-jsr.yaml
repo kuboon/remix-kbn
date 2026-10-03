@@ -30,6 +30,7 @@ jobs:
       matrix:
         package:
           - assets-deno
+          - data-table-d1
           - data-table-sqlite-turso
           - helper-agent
           - mcp

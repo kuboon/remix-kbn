@@ -1,0 +1,26 @@
+{
+  "name": "@remix-kbn/data-table-d1",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/mod.ts",
+    "./node": "./src/node.ts",
+    "./cli": "./src/cli.ts"
+  },
+  "imports": {
+    "@remix-run/data-table": "npm:@remix-run/data-table@^1.0.0",
+    "@remix-run/data-table/cli": "npm:@remix-run/data-table@^1.0.0/cli",
+    "@remix-run/data-table/migrations/node": "npm:@remix-run/data-table@^1.0.0/migrations/node",
+    "@remix-run/data-table/sql-helpers": "npm:@remix-run/data-table@^1.0.0/sql-helpers",
+    "@remix-run/assert": "npm:@remix-run/assert@^1.0.0",
+    "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
+  },
+  "tasks": {
+    "test": "deno test --allow-read --allow-write --allow-env",
+    "check": "deno check src"
+  },
+  "publish": {
+    "include": ["src", "README.md", "LICENSE", "deno.json"],
+    "exclude": ["**/*.test.ts"]
+  }
+}
