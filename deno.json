@@ -10,7 +10,10 @@
   ],
   "minimumDependencyAge": {
     "age": "P1D",
-    "exclude": ["npm:@remix-run/*"]
+    "exclude": [
+      "npm:@remix-run/*",
+      "jsr:@kuboon/*"
+    ]
   },
   "fmt": {
     "singleQuote": true,

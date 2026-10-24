@@ -15,8 +15,8 @@ import type { AgentTool } from './agent.ts'
 import { helperAgentController } from './controller.ts'
 import { dummyAgent } from './dummy-agent.ts'
 import type { DummyScript } from './dummy-agent.ts'
-import { HelperAgentSession, unansweredCalls } from './session.ts'
-import type { ClientTool } from './session.ts'
+import { ChatSession as HelperAgentSession, unansweredCalls } from '@kuboon/chat-element/session'
+import type { ClientTool } from '@kuboon/chat-element/session'
 
 const ENDPOINT = 'http://localhost/helper-agent'
 
