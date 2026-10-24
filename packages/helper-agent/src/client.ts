@@ -1,31 +1,44 @@
 /**
- * The browser half: the conversation, and a panel to show it in.
+ * The browser half: [`@kuboon/chat-element`](https://jsr.io/@kuboon/chat-element), under the
+ * names this package has always used for it.
  *
- * {@link openHelperAgent} is the one-line version — a `<dialog>` with the chat in it, for a host
- * whose plan is "press this button and the helper opens". Under it, {@link HelperAgentSession} is
- * the conversation on its own, and {@link HelperAgentChat} is a `@remix-run/component` component over one;
- * an app that wants the chat inside its own layout, or drawn its own way, takes those two instead.
+ * {@link openHelperAgent} is the one-line version — a `<dialog>` with a `<chat-panel>` in it, for
+ * a host whose plan is "press this button and the helper opens". Under it, {@link HelperAgentSession}
+ * is the conversation on its own, and `createChatPanel` draws one inside the host's own layout.
  *
- * The transport is where the interesting choice is. It defaults to the network, and it takes a
- * `fetch` — so a `@remix-run/fetch-router` running in this same document answers it too, which is
- * what lets the whole chat work on a static host with `agent/dummy` behind it.
+ * None of it depends on Remix: the panel is a custom element, and the session is an `EventTarget`
+ * that posts to anything answering a `Request` — the controller on a server, or a
+ * `@remix-run/fetch-router` router running in this same document, which is what lets the whole
+ * chat work on a static host with `agent/dummy` behind it.
+ *
+ * The panel can also let the person point at something on the page instead of describing it; only
+ * the element's CSS path is sent. `pickElementTool: true` offers the same to the model.
  *
  * @module
  */
 
-export { openHelperAgent } from './lib/open.ts'
-export type { HelperAgentPanel, OpenHelperAgentOptions } from './lib/open.ts'
-
-export { HelperAgentChat } from './lib/chat.tsx'
-export type { HelperAgentChatProps } from './lib/chat.tsx'
-
-export { HelperAgentSession, unansweredCalls } from './lib/session.ts'
+export {
+  ChatSession as HelperAgentSession,
+  createChatPanel,
+  defineChatPanel,
+  elementPath,
+  openChat as openHelperAgent,
+  pickElement,
+  pickElementTool,
+  unansweredCalls,
+} from '@kuboon/chat-element'
 export type {
+  ChatDialog as HelperAgentPanel,
+  ChatPanelElement,
+  ChatPanelLabels,
+  ChatSessionOptions as HelperAgentSessionOptions,
+  ChatStatus as HelperAgentStatus,
+  ChatTransport as HelperAgentTransport,
   ClientTool,
-  HelperAgentSessionOptions,
-  HelperAgentStatus,
-  HelperAgentTransport,
-} from './lib/session.ts'
+  OpenChatOptions as OpenHelperAgentOptions,
+  PickElementOptions,
+  PickElementToolOptions,
+} from '@kuboon/chat-element'
 
 export type {
   AgentEvent,

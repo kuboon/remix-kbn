@@ -9,7 +9,7 @@ It is three pieces that snap together and can each be replaced:
 (the panel, in the browser)     (one route)                     /agent/dummy
 ```
 
-- **`/client`** holds the conversation and draws it. Its transport is a `fetch`, not a URL, so the thing answering does not have to be a server.
+- **`/client`** holds the conversation and draws it. It is [`@kuboon/chat-element`](https://jsr.io/@kuboon/chat-element) — a custom element with no Remix in it — under this package's names. Its transport is a `fetch`, not a URL, so the thing answering does not have to be a server.
 - **`/controller`** is one `POST` route. It keeps nothing between requests.
 - **`/agent/claude`** answers through the Anthropic Messages API. **`/agent/dummy`** answers from a script.
 
@@ -19,6 +19,7 @@ It is three pieces that snap together and can each be replaced:
 - **Streaming** — `text/event-stream`, with the header that stops nginx buffering it into one block at the end.
 - **Stateless** — the browser holds the transcript and posts it each turn, so the controller runs anywhere: a serverless function, a long-lived server, or a router inside the page.
 - **Testable without a model** — `agent/dummy` is a real agent, so the client, the protocol and the tool round trip are exercised with no key, no network and no bill.
+- **Pointing at the page** — a button beside the composer lets the person click the element they mean instead of describing it. Only its CSS path is sent, never its contents. The model can ask for the same through a tool.
 - **The host owns the button** — this package draws the panel, not the thing that opens it.
 
 ## Installation
@@ -26,7 +27,7 @@ It is three pieces that snap together and can each be replaced:
 This package is published to [JSR](https://jsr.io/@remix-kbn/helper-agent):
 
 ```sh
-deno add jsr:@remix-kbn/helper-agent npm:@remix-run/fetch-router npm:@remix-run/component
+deno add jsr:@remix-kbn/helper-agent npm:@remix-run/fetch-router
 deno add npm:@anthropic-ai/sdk   # only if you serve agent/claude
 ```
 
@@ -34,7 +35,7 @@ For Node:
 
 ```sh
 npx jsr add @remix-kbn/helper-agent
-npm install @remix-run/fetch-router @remix-run/component @anthropic-ai/sdk
+npm install @remix-run/fetch-router @anthropic-ai/sdk
 ```
 
 ## Usage
@@ -69,6 +70,7 @@ let panel = openHelperAgent({
   transport: '/helper-agent',
   title: 'Help',
   greeting: 'Ask me how anything here works.',
+  pickElementTool: true,
 })
 
 document.querySelector('#help')!.addEventListener('click', () => {
@@ -78,14 +80,26 @@ document.querySelector('#help')!.addEventListener('click', () => {
 
 Open it once and keep the handle: the conversation lives in the session behind it, so `show()` and `close()` are a toggle and a second `openHelperAgent()` is a second conversation.
 
-For a chat inside your own layout, take the two pieces under it instead — `HelperAgentSession` is the conversation on its own, and `HelperAgentChat` is a `@remix-run/component` component over one:
+For a chat inside your own layout, take the two pieces under it instead — `HelperAgentSession` is the conversation on its own, and `createChatPanel` makes a `<chat-panel>` element over one:
 
-```tsx
-import { HelperAgentChat, HelperAgentSession } from '@remix-kbn/helper-agent/client'
+```ts
+import { createChatPanel, HelperAgentSession } from '@remix-kbn/helper-agent/client'
 
-let session = new HelperAgentSession({ transport: '/helper-agent' }) // …somewhere in a page
-<HelperAgentChat session={session} title='Help' />
+let session = new HelperAgentSession({ transport: '/helper-agent' })
+let panel = createChatPanel(session)
+panel.heading = 'Help'
+sidebar.append(panel)
 ```
+
+It is a plain custom element, so it goes anywhere a `<div>` does — a Remix component, a server-rendered page, a static one.
+
+### Pointing at the page
+
+The ⌖ button beside the composer lets the person click the element they are asking about. What is under the pointer is outlined, the click is swallowed rather than pressed, `Escape` cancels, and the element's CSS path (`#settings > button:nth-of-type(2)`) lands in the composer, where they can see it before sending.
+
+**Only the path is sent** — no text, no form values. Whatever the model needs to know about the element after that is a tool's to read, under the page's own rules.
+
+`pickElementTool: true` offers the same to the model as a `pick_element` tool, so it can ask "which one?" itself. `pickElement()` and `elementPath()` are exported for a tool of your own.
 
 ## Tools
 
@@ -215,15 +229,17 @@ One method: continue the conversation, stream what happens. Implementing it is h
 
 ### `/client`
 
+Re-exports of [`@kuboon/chat-element`](https://jsr.io/@kuboon/chat-element) under this package's names; its README has the rest.
+
 #### `openHelperAgent(options): HelperAgentPanel`
 
-A `<dialog>` with the panel in it. Takes everything `HelperAgentSession` does, plus `title`, `greeting`, `placeholder`, `modal` (default `false`) and `container` (default `document.body`). Returns `{ session, dialog, open, show(), close(), dispose() }`.
+A `<dialog>` with a `<chat-panel>` in it. Takes everything `HelperAgentSession` does, plus `title`, `greeting`, `placeholder`, `pickElementTool` (default `false`), `modal` (default `false`) and `container` (default `document.body`). Returns `{ session, dialog, panel, open, show(), close(), dispose() }`.
 
-Non-modal by default: a chat explaining how to use a screen is a chat the person has to be able to use the screen alongside.
+Non-modal by default: a chat explaining how to use a screen is a chat the person has to be able to use the screen alongside — and point at.
 
 #### `new HelperAgentSession(options)`
 
-The conversation. A `TypedEventTarget` that fires `change` whenever anything observable moves.
+The conversation. An `EventTarget` that fires `change` whenever anything observable moves.
 
 - `transport` — a path or URL, or `{ url, fetch }` to have something other than the network answer it.
 - `tools` — what this page can run.
@@ -231,13 +247,17 @@ The conversation. A `TypedEventTarget` that fires `change` whenever anything obs
 
 Exposes `messages`, `status`, `error`, `busy`, and `send(text)`, `stop()`, `reset()`.
 
-#### `HelperAgentChat`
+#### `createChatPanel(session): ChatPanelElement`
 
-A `@remix-run/component` component over a session. Props: `session`, `title`, `greeting`, `placeholder`, `onClose`.
+A `<chat-panel>` over a session. Properties (and attributes): `heading`, `greeting`, `placeholder`, `closable` (fires `close`), `picker` (the ⌖ button; off with `no-picker`), `labels`.
 
 `http(s)` URLs in a reply are rendered as links, which is most of what support is: pointing at the page with the setting on it, the article that explains it, the report a tool just drafted. Nothing else is linkified — a `javascript:` URL is a word here, not a URL — and a tool should return a URL rather than try to open a tab, since by the time it runs there is no user gesture left and the browser blocks it.
 
-It styles itself from custom properties set on the panel — `--helper-agent-bg`, `--helper-agent-fg`, `--helper-agent-muted`, `--helper-agent-border`, `--helper-agent-accent`, `--helper-agent-on-accent`, `--helper-agent-radius`. Set them on the element you mount into, or on `:root`, and it follows the site.
+It styles itself from custom properties — `--chat-panel-bg`, `--chat-panel-fg`, `--chat-panel-muted`, `--chat-panel-border`, `--chat-panel-accent`, `--chat-panel-on-accent`, `--chat-panel-radius`. Set them on `:root` or on any element above the panel, and it follows the site.
+
+#### `pickElement(options?)`, `elementPath(element)`, `pickElementTool(options?)`
+
+Letting the person point at an element, describing it as a CSS path, and offering that to the model as a tool.
 
 ### `/agent/claude`
 
@@ -285,7 +305,7 @@ One turn can hold several assistant messages, because a tool the controller runs
 ## Related Packages
 
 - [`fetch-router`](https://github.com/remix-run/remix/tree/main/packages/fetch-router) — the router the controller mounts on
-- [`@remix-run/component`](https://github.com/remix-run/remix/tree/main/packages/ui) — what the panel is written in
+- [`@kuboon/chat-element`](https://jsr.io/@kuboon/chat-element) — the panel, the session and the wire format
 - [`@anthropic-ai/sdk`](https://www.npmjs.com/package/@anthropic-ai/sdk) — what `agent/claude` talks through
 
 ## License

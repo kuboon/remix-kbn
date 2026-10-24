@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@deno/installer-shell-setup@*": "0.3.4",
     "jsr:@deno/loader@0.5": "0.5.0",
+    "jsr:@kuboon/chat-element@0.1": "0.1.0",
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/cli@1": "1.0.32",
     "jsr:@std/encoding@1": "1.0.11",
@@ -27,6 +28,9 @@
     },
     "@deno/loader@0.5.0": {
       "integrity": "a6d94408de5e6bacac404f8f6963c8b8cc278cfd1a878aa2f06b34a083d6bfee"
+    },
+    "@kuboon/chat-element@0.1.0": {
+      "integrity": "fd8b9dd0f8403168718031ac2dd070e56ea1f4ef3c5e488f8c5dc6264cf5cf27"
     },
     "@std/assert@1.0.19": {
       "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e"
@@ -298,10 +302,10 @@
       },
       "packages/helper-agent": {
         "dependencies": [
+          "jsr:@kuboon/chat-element@0.1",
           "jsr:@std/testing@1",
           "npm:@anthropic-ai/sdk@0.128",
           "npm:@remix-run/assert@1",
-          "npm:@remix-run/component@1",
           "npm:@remix-run/fetch-router@1"
         ]
       },

@@ -1,6 +1,6 @@
 {
   "name": "@remix-kbn/helper-agent",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "exports": {
     "./client": "./src/client.ts",
@@ -10,9 +10,9 @@
   },
   "imports": {
     "@anthropic-ai/sdk": "npm:@anthropic-ai/sdk@^0.128.0",
+    "@kuboon/chat-element": "jsr:@kuboon/chat-element@^0.1.0",
     "@remix-run/assert": "npm:@remix-run/assert@^1.0.0",
     "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^1.0.0",
-    "@remix-run/component": "npm:@remix-run/component@^1.0.0",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
   },
   "tasks": {
@@ -27,8 +27,7 @@
       "deno.json"
     ],
     "exclude": [
-      "**/*.test.ts",
-      "**/*.test.tsx"
+      "**/*.test.ts"
     ]
   },
   "compilerOptions": {
@@ -37,8 +36,6 @@
       "dom",
       "dom.iterable",
       "esnext"
-    ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "@remix-run/component"
+    ]
   }
 }

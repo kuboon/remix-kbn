@@ -2,6 +2,17 @@
 
 This is the changelog for [`helper-agent`](https://github.com/kuboon/remix-kbn/tree/main/packages/helper-agent). It follows [semantic versioning](https://semver.org/).
 
+## 0.4.0
+
+The client no longer depends on Remix. It moved to [`@kuboon/chat-element`](https://jsr.io/@kuboon/chat-element), a framework-free custom element, and `/client` re-exports it under this package's names.
+
+- **Breaking:** `HelperAgentChat` (the `@remix-run/component` component) is gone. Use `createChatPanel(session)`, which returns a `<chat-panel>` element, or `openHelperAgent()` as before.
+- **Breaking:** the styling properties are renamed `--helper-agent-*` → `--chat-panel-*`, and are now read from anywhere above the panel.
+- `HelperAgentSession` is an `EventTarget` rather than a `TypedEventTarget`. Same `change` event.
+- New: the person can point at an element on the page instead of describing it — a ⌖ button beside the composer puts the element's CSS path in the message. Only the path is sent, never the contents. `openHelperAgent({ pickElementTool: true })` offers the same to the model as `pick_element`; `pickElement`, `elementPath` and `pickElementTool` are exported.
+- The wire format (`/controller`'s `AgentEvent`, `ChatMessage`, …) now comes from `@kuboon/chat-element/protocol`, so the two halves share one definition. Unchanged on the wire.
+- `@remix-run/component` is no longer a dependency.
+
 ## 0.3.0
 
 Follows Remix v3 `3.0.0` (stable).
