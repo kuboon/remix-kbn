@@ -1,11 +1,11 @@
 {
   "name": "@remix-kbn/ui-pinch-pan",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "imports": {
     "@remix-run/assert": "npm:@remix-run/assert@^1.0.0",
-    "@remix-run/component": "npm:@remix-run/component@^1.0.0",
+    "@remix-run/component": "npm:@remix-run/component@^1.1.0",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
   },
   "tasks": {

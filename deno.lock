@@ -15,7 +15,7 @@
     "npm:@libsql/client@~0.17.4": "0.17.4",
     "npm:@modelcontextprotocol/server@2": "2.0.0",
     "npm:@remix-run/assert@1": "1.0.0",
-    "npm:@remix-run/component@1": "1.0.0",
+    "npm:@remix-run/component@^1.1.0": "1.1.0",
     "npm:@remix-run/data-table@1": "1.0.0",
     "npm:@remix-run/fetch-router@1": "1.0.0",
     "npm:cjs-module-lexer@^2.2.1": "2.2.1",
@@ -171,8 +171,8 @@
     "@remix-run/assert@1.0.0": {
       "integrity": "sha512-ygVYpSz7uc7Wg72Ty0rN29J9Qtna30BVwwHF8K/M8WcSt28peoe8jRAAivUQe+7haSizemwUL3E7UxTCBycW9w=="
     },
-    "@remix-run/component@1.0.0": {
-      "integrity": "sha512-89stfiyRE+99sQDbX5Hu56ro44a15Mhh7OYev3lJ+7ZJgOLRjrjymahzS0p4A6J19e4U5rOBUqa8BJvUHm0eig==",
+    "@remix-run/component@1.1.0": {
+      "integrity": "sha512-FHcYTeDGiIS3s5gyymEvUKfRDtyYkY5Wt/uXr3+kPRK6tbqbD9gD2979f3TlStbi2drwdUAnyuA8CS23JRFlXQ==",
       "dependencies": [
         "@types/dom-navigation"
       ]
@@ -330,7 +330,7 @@
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@remix-run/assert@1",
-          "npm:@remix-run/component@1"
+          "npm:@remix-run/component@^1.1.0"
         ]
       }
     }
