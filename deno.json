@@ -3,6 +3,7 @@
     "./packages/assets-deno",
     "./packages/data-table-d1",
     "./packages/data-table-sqlite-turso",
+    "./packages/dragology",
     "./packages/helper-agent",
     "./packages/mcp",
     "./packages/ssg",
