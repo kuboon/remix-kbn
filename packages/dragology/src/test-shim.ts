@@ -1,5 +1,6 @@
 // Lets the tests carried over from dragology keep their `vitest` imports:
 // deno.json maps `vitest` here. Only what those tests use is covered.
+import '../dragology-jsx.ts'
 import { describe as bddDescribe, it } from '@std/testing/bdd'
 import { expect as stdExpect } from '@std/expect'
 import { format, plugins } from 'pretty-format'

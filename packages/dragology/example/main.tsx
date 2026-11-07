@@ -1,6 +1,7 @@
 // A small app using @remix-kbn/dragology: a toggle (d.between), a
 // slider (d.vary), a reorderable list (d.closest + withFloating), and
 // cards holding stateful Remix components that survive reordering.
+import '../dragology-jsx.ts'
 import { createRoot, type Handle, on } from '@remix-run/component'
 import { type Draggable, DraggableRenderer, inOrder, param, translate } from '../src/mod.ts'
 

@@ -1,6 +1,6 @@
 # Building Interactive Diagrams with Dragology
 
-> This is the usage guide from [Dragology](https://github.com/declarative-dragging/dragology), adapted for `@remix-kbn/dragology`, its port to Remix v3 (`@remix-run/component`). Import from `@remix-kbn/dragology` wherever this guide says `dragology`. The model, drag specs and `dragology*` props are the same; what differs is how components, events and state are written, which this guide uses the Remix forms of.
+> This is the usage guide from [Dragology](https://github.com/declarative-dragging/dragology), adapted for `@remix-kbn/dragology`, its port to Remix v3 (`@remix-run/component`). Import from `@remix-kbn/dragology` wherever this guide says `dragology`. The `dragology*` props need a small type augmentation in your app (see the package README). The model, drag specs and `dragology*` props are the same; what differs is how components, events and state are written, which this guide uses the Remix forms of.
 
 Dragology is a library for building interactive, draggable SVG interfaces. You describe how your UI looks as a function of state, attach drag specs to elements, and the library handles pointer tracking, animation, and state interpolation.
 

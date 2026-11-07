@@ -5,8 +5,8 @@
  * @module
  */
 
-// Augment Remix's host props with the `dragology*` props.
-import './jsx.ts'
+// The `dragology*` JSX props, for the app's own type augmentation.
+export type { DragologyComponentProps, DragologyHostProps } from './jsx.ts'
 
 // Core component
 export { DraggableRenderer } from './DraggableRenderer.tsx'
@@ -21,7 +21,7 @@ export type { Draggable, DraggableProps, SetState } from './draggable.tsx'
 
 // DragSpec & builder
 export { and, inOrder, lessThan, moreThan, param } from './DragSpec.tsx'
-export type { DragSpec, DragSpecBuilder, DragSpecMethods } from './DragSpec.tsx'
+export type { DragSpec, DragSpecBrand, DragSpecBuilder, DragSpecMethods } from './DragSpec.tsx'
 
 // Transitions
 export type { Transition, TransitionLike } from './transition.ts'

@@ -18,6 +18,7 @@ import { Operator, type OpOverlayVisProps, type OpResult } from '../op/index.tsx
 import { DistanceLine } from '../OverlayVis.tsx'
 import { getAtPath, type PathIn, setAtPath } from '../paths.ts'
 import { drawLayered, layeredMerge, type LayeredSvgx, layerSvg } from '../svgx/layers.tsx'
+import { createSvgx } from '../svgx/index.ts'
 import {
   type Many,
   type ManyReader,
@@ -177,13 +178,18 @@ class VaryOp<T extends object> extends Operator<T> {
       previewLayered = layeredMerge(
         previewLayered,
         layerSvg(
-          <g id='vary-cloud' dragologyZIndex='/-100' dragologyOpaque>
-            {ghosted.map((g, i) => (
+          // Built with createSvgx: Dragology's props aren't in the JSX
+          // types unless the app adds them (see jsx.ts).
+          createSvgx('g', {
+            id: 'vary-cloud',
+            dragologyZIndex: '/-100',
+            dragologyOpaque: true,
+            children: ghosted.map((g, i) => (
               <g key={`explored-${i}`} opacity={0.15}>
                 {drawLayered(g)}
               </g>
-            ))}
-          </g>,
+            )),
+          }),
         ),
       )
     }
