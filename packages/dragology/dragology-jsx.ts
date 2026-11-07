@@ -8,14 +8,11 @@ import type { DragologyComponentProps, DragologyHostProps } from './src/mod.ts'
 
 declare module '@remix-run/component' {
   // Every intrinsic element's props extend HostProps.
-  // deno-lint-ignore no-empty-interface no-unused-vars
   interface HostProps<eventTarget extends EventTarget> extends DragologyHostProps {}
 }
 
 declare global {
-  // deno-lint-ignore no-namespace
   namespace JSX {
-    // deno-lint-ignore no-empty-interface
     interface IntrinsicAttributes extends DragologyComponentProps {}
   }
 }
