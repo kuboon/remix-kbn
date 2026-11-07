@@ -64,7 +64,8 @@ changed is everything that touched React:
   Events bubble through the DOM, so a `pointerdown` inside one starts the enclosing drag unless the
   component stops it.
 - **`<foreignObject>` is drawn by Dragology, not Remix.** `@remix-run/component` creates the
-  foreignObject element itself in the HTML namespace, where it renders nothing; Dragology keeps a
+  foreignObject element itself in the HTML namespace, where it renders nothing
+  ([remix-run/remix#12231](https://github.com/remix-run/remix/issues/12231)); Dragology keeps a
   real SVG `foreignObject` in its place. As upstream, it may only contain component elements.
 - **Debug views:** the SVG overlay (`showDebugOverlay`) is ported, and `OverlayVis` /
   `DistanceLine` are plain functions you call rather than components. Upstream's HTML spec-tree

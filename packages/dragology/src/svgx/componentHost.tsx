@@ -27,6 +27,8 @@ import { getPath } from './path.ts'
 // foreignObject rather than below it), where it draws nothing. So it
 // becomes a placeholder <g>, and we keep a real SVG foreignObject in
 // it, holding the containers of the components inside.
+// https://github.com/remix-run/remix/issues/12231: once that's fixed,
+// a foreignObject can be left to Remix like any other element.
 
 type HostedComponent = {
   key: string
