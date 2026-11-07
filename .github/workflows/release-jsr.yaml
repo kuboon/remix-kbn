@@ -32,6 +32,7 @@ jobs:
           - assets-deno
           - data-table-d1
           - data-table-sqlite-turso
+          - dragology
           - helper-agent
           - mcp
           - ssg

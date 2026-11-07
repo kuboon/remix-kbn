@@ -1,0 +1,63 @@
+{
+  "name": "@remix-kbn/dragology",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./src/mod.ts",
+  "imports": {
+    "@remix-run/component": "npm:@remix-run/component@^1.1.0",
+    "@std/expect": "jsr:@std/expect@^1",
+    "@std/testing/bdd": "jsr:@std/testing@^1/bdd",
+    "@std/testing/mock": "jsr:@std/testing@^1/mock",
+    "d3-color": "npm:d3-color@^3.1.0",
+    "d3-delaunay": "npm:d3-delaunay@^6.0.4",
+    "d3-ease": "npm:d3-ease@^3.0.1",
+    "d3-interpolate": "npm:d3-interpolate@^3.0.1",
+    "d3-interpolate-path": "npm:d3-interpolate-path@^2.3.0",
+    "immer": "npm:immer@^11.0.0",
+    "lodash-es": "npm:lodash-es@^4.18.1",
+    "pretty-format": "npm:pretty-format@^30.2.0",
+    "vitest": "./src/test-shim.ts"
+  },
+  "tasks": {
+    "test": "deno test --allow-read --allow-env",
+    "check": "deno check src",
+    "example": "deno bundle --unstable-bundle --platform browser -o example/main.js example/main.tsx && deno run --allow-net --allow-read jsr:@std/http@^1/file-server example"
+  },
+  "publish": {
+    "include": [
+      "src",
+      "README.md",
+      "AGENTS.md",
+      "LICENSE",
+      "deno.json"
+    ],
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "src/test-shim.ts"
+    ]
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@remix-run/component",
+    "lib": [
+      "deno.ns",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "lint": {
+    "exclude": [
+      "src/math/cobyla.js"
+    ],
+    "rules": {
+      "exclude": [
+        "no-explicit-any",
+        "no-this-alias",
+        "jsx-key",
+        "jsx-boolean-value"
+      ]
+    }
+  }
+}
