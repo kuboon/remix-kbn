@@ -1,6 +1,5 @@
 import { Fragment, type RemixElement, type RemixNode } from '@remix-run/component'
 import { jsx } from '@remix-run/component/jsx-runtime'
-import type {} from '../jsx.ts'
 import { combineTransforms } from './transform.ts'
 
 // SVGX is our slang for "messing around with SVG represented as

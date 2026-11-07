@@ -41,6 +41,31 @@ createRoot(document.getElementById('root')!).render(
 Set `"jsx": "react-jsx"` and `"jsxImportSource": "@remix-run/component"` in your `compilerOptions`,
 as for any Remix v3 UI code.
 
+### Adding the `dragology*` props to the JSX types
+
+JSR doesn't let a package change another package's types or the global `JSX` namespace, so this
+package can't add `dragologyOnDrag`, `dragologyZIndex` and the rest to Remix's JSX types itself.
+Add them in your app: copy [`dragology-jsx.ts`](./dragology-jsx.ts) into it, change its import
+to `'@remix-kbn/dragology'`, and import it once from your entry module.
+
+```ts
+// dragology-jsx.ts
+import type {} from '@remix-run/component'
+import type { DragologyComponentProps, DragologyHostProps } from '@remix-kbn/dragology'
+
+declare module '@remix-run/component' {
+  interface HostProps<eventTarget extends EventTarget> extends DragologyHostProps {}
+}
+
+declare global {
+  namespace JSX {
+    interface IntrinsicAttributes extends DragologyComponentProps {}
+  }
+}
+```
+
+Without it, everything still runs; only type checking rejects the `dragology*` props.
+
 [`AGENTS.md`](./AGENTS.md) is upstream's usage guide (the `Draggable` model, every drag spec, ids
 and layers, gotchas), adapted to this port. [`example/main.tsx`](./example/main.tsx) has a toggle,
 a slider, a reorderable list and cards holding stateful components; run it with
