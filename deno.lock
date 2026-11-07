@@ -429,6 +429,9 @@
     }
   },
   "workspace": {
+    "dependencies": [
+      "npm:@remix-run/component@^1.2.0"
+    ],
     "members": {
       "packages/assets-deno": {
         "dependencies": [
