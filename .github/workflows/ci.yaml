@@ -19,6 +19,6 @@ jobs:
       - name: Lint
         run: deno lint
       - name: Type check
-        run: deno check packages/*/src
+        run: deno check packages/*/src demo
       - name: Test
         run: deno test --allow-read --allow-write --allow-env --allow-net --allow-sys --allow-ffi --unstable-bundle

@@ -9,6 +9,9 @@
     "./packages/ssg",
     "./packages/ui-pinch-pan"
   ],
+  "imports": {
+    "@remix-run/component": "npm:@remix-run/component@^1.2.0"
+  },
   "minimumDependencyAge": {
     "age": "P1D",
     "exclude": [
@@ -32,6 +35,14 @@
   },
   "tasks": {
     "test": "deno test --allow-read --allow-write --allow-env --allow-net --allow-sys --allow-ffi --unstable-bundle",
-    "check": "deno check packages/*/src"
+    "check": "deno check packages/*/src",
+    "build": {
+      "description": "Build the demo page into dist/. Hoisted node_modules keep lazy chunks out of dot directories, which GitHub Pages artifacts drop.",
+      "command": "rm -rf dist && deno install --node-modules-dir=manual --node-modules-linker=hoisted && deno bundle --platform browser --minify --node-modules-dir=manual --node-modules-linker=hoisted --outdir dist demo/index.html"
+    }
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@remix-run/component"
   }
 }

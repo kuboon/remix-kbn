@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@remix-kbn packages demo</title>
+    <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #fafafa;
+      --fg: #1f2328;
+      --muted: #59636e;
+      --card: #ffffff;
+      --border: #d1d9e0;
+      --accent: #0969da;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --card: #151b23;
+        --border: #3d444d;
+        --accent: #4493f8;
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 system-ui, sans-serif;
+    }
+    header,
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    header {
+      padding-top: 32px;
+    }
+    header p {
+      color: var(--muted);
+      margin-top: 0;
+    }
+    a {
+      color: var(--accent);
+    }
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-bottom: 8px;
+    }
+    main > section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+    main > section > h2 {
+      margin-top: 0;
+    }
+    main > section > h2 code {
+      font-size: 0.9em;
+    }
+    .lead {
+      color: var(--muted);
+      margin-top: -8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    figure {
+      margin: 0;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+    figcaption {
+      font-weight: 600;
+    }
+    figcaption + p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 8px;
+    }
+    .counter {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      height: 100%;
+      color: #1f2328;
+      font-size: 14px;
+    }
+    .counter button {
+      font: inherit;
+      padding: 0 8px;
+      border: 1px solid #d1d9e0;
+      border-radius: 6px;
+      background: #f6f8fa;
+      color: inherit;
+      cursor: pointer;
+    }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>@remix-kbn packages demo</h1>
+      <p>
+        Live demos of packages published from
+        <a href="https://github.com/kuboon/remix-kbn">kuboon/remix-kbn</a>.
+      </p>
+      <nav>
+        <a href="#dragology">@remix-kbn/dragology</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="dragology">
+        <h2>
+          <a href="https://jsr.io/@remix-kbn/dragology"><code>@remix-kbn/dragology</code></a>
+        </h2>
+        <p class="lead">
+          <a href="https://github.com/declarative-dragging/dragology">Dragology</a>'s
+          declarative SVG dragging on Remix v3: each picture is a function of its
+          state, and a drag spec says which states an element can be dragged
+          between. Drag the knobs, handles and list items.
+        </p>
+        <div class="grid">
+          <figure>
+            <figcaption><code>d.between</code></figcaption>
+            <p>A switch: drag the knob; it snaps to on or off.</p>
+            <div id="dragology-toggle"></div>
+          </figure>
+          <figure>
+            <figcaption><code>d.vary</code> + constraint</figcaption>
+            <p>A slider whose value is kept between 0 and 240.</p>
+            <div id="dragology-slider"></div>
+          </figure>
+          <figure>
+            <figcaption><code>d.vary</code> over an angle</figcaption>
+            <p>The state is an angle, so the handle can only go round.</p>
+            <div id="dragology-dial"></div>
+          </figure>
+          <figure>
+            <figcaption><code>d.closest().withFloating()</code></figcaption>
+            <p>A reorderable list.</p>
+            <div id="dragology-list"></div>
+          </figure>
+          <figure>
+            <figcaption>Component elements</figcaption>
+            <p>
+              Each card holds a Remix component with its own count. Click +1,
+              then reorder: the counts stay.
+            </p>
+            <div id="dragology-cards"></div>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>
