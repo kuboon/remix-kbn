@@ -10,7 +10,8 @@
     "./packages/ui-pinch-pan"
   ],
   "imports": {
-    "@remix-run/component": "npm:@remix-run/component@^1.2.0"
+    "@remix-run/component": "npm:@remix-run/component@^1.2.0",
+    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^1.0.0"
   },
   "minimumDependencyAge": {
     "age": "P1D",

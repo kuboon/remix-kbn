@@ -14,6 +14,15 @@
       --border: #d1d9e0;
       --accent: #0969da;
     }
+    :root {
+      /* The help chat follows the page's colours. */
+      --chat-panel-bg: var(--card);
+      --chat-panel-fg: var(--fg);
+      --chat-panel-muted: var(--muted);
+      --chat-panel-border: var(--border);
+      --chat-panel-accent: var(--accent);
+      --chat-panel-on-accent: #fff;
+    }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0d1117;
@@ -92,6 +101,38 @@
       font-size: 14px;
       margin: 0 0 8px;
     }
+    .pinch-pan-viewport {
+      height: 320px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    button {
+      font: inherit;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: inherit;
+      cursor: pointer;
+    }
+    button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
     .counter {
       display: flex;
       gap: 8px;
@@ -116,10 +157,13 @@
       <h1>@remix-kbn packages demo</h1>
       <p>
         Live demos of packages published from
-        <a href="https://github.com/kuboon/remix-kbn">kuboon/remix-kbn</a>.
+        <a href="https://github.com/kuboon/remix-kbn">kuboon/remix-kbn</a>
+        to <a href="https://jsr.io/@remix-kbn">jsr.io/@remix-kbn</a>.
       </p>
       <nav>
         <a href="#dragology">@remix-kbn/dragology</a>
+        <a href="#ui-pinch-pan">@remix-kbn/ui-pinch-pan</a>
+        <a href="#helper-agent">@remix-kbn/helper-agent</a>
       </nav>
     </header>
 
@@ -164,6 +208,33 @@
             <div id="dragology-cards"></div>
           </figure>
         </div>
+      </section>
+
+      <section id="ui-pinch-pan">
+        <h2>
+          <a href="https://jsr.io/@remix-kbn/ui-pinch-pan"><code>@remix-kbn/ui-pinch-pan</code></a>
+        </h2>
+        <p class="lead">
+          Pinch, pan and wheel as a <code>@remix-run/component</code> mixin. On a touchscreen, pinch
+          and pan with two fingers. On a trackpad, two-finger scroll pans and a pinch zooms about the
+          cursor. With a mouse, the wheel pans and <kbd>Ctrl</kbd> / <kbd>⌘</kbd> + wheel zooms.
+          The buttons drive the same view through the mixin's <code>controls</code>.
+        </p>
+        <div id="pinch-pan-demo"></div>
+      </section>
+
+      <section id="helper-agent">
+        <h2>
+          <a href="https://jsr.io/@remix-kbn/helper-agent"><code>@remix-kbn/helper-agent</code></a>
+        </h2>
+        <p class="lead">
+          An in-page support chat: the panel, a <code>fetch-router</code> route, and an agent behind
+          it. GitHub Pages has no server, so here the route runs on a router in the page with the
+          scripted <code>dummyAgent</code> behind it — the stream and both kinds of tool (one the
+          route runs, one the page runs, and pointing at an element) are real; only the model is
+          missing.
+        </p>
+        <button type="button" class="primary" id="helper-agent-open">Open the help chat</button>
       </section>
     </main>
 
