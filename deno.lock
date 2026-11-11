@@ -430,7 +430,8 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:@remix-run/component@^1.2.0"
+      "npm:@remix-run/component@^1.2.0",
+      "npm:@remix-run/fetch-router@1"
     ],
     "members": {
       "packages/assets-deno": {

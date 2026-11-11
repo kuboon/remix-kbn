@@ -203,7 +203,7 @@ openHelperAgent({
 })
 ```
 
-What you cannot demonstrate there is the model; everything else is the real thing.
+What you cannot demonstrate there is the model; everything else is the real thing. The [demo page](https://kuboon.github.io/remix-kbn/#helper-agent) runs exactly this, from [`demo/helper-agent.ts`](../../demo/helper-agent.ts).
 
 ## API
 

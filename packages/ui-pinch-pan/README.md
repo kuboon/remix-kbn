@@ -17,6 +17,9 @@ import { pinchPan } from '@remix-kbn/ui-pinch-pan'
 </div>
 ```
 
+Try it on the [demo page](https://kuboon.github.io/remix-kbn/#ui-pinch-pan)
+([source](../../demo/pinch-pan.tsx)).
+
 The host element listens; its content is transformed. Nothing else is required — the mixin sets
 `touch-action: none` on the host and `transform-origin: 0 0` on the content itself, because both are
 load-bearing and both are easy to forget.

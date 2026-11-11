@@ -12,6 +12,8 @@ import {
   rotateDeg,
   translate,
 } from '@remix-kbn/dragology'
+import { setupHelperAgentDemo } from './helper-agent.ts'
+import { setupPinchPanDemo } from './pinch-pan.tsx'
 
 // --- @remix-kbn/dragology ---
 
@@ -198,3 +200,11 @@ mount(
     height={170}
   />,
 )
+
+// --- @remix-kbn/ui-pinch-pan ---
+
+setupPinchPanDemo()
+
+// --- @remix-kbn/helper-agent ---
+
+setupHelperAgentDemo()
