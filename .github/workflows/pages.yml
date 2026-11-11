@@ -1,0 +1,19 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  pages:
+    uses: kuboon/workflows/.github/workflows/github-page-with-preview.yaml@main
+    with:
+      # main is rebuilt on every PR run too; until main has a mise.toml there is nothing to build.
+      build-command: if [ -f mise.toml ]; then mise run build; else mkdir -p dist; fi

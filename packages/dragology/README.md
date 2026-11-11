@@ -67,9 +67,9 @@ declare global {
 Without it, everything still runs; only type checking rejects the `dragology*` props.
 
 [`AGENTS.md`](./AGENTS.md) is upstream's usage guide (the `Draggable` model, every drag spec, ids
-and layers, gotchas), adapted to this port. [`example/main.tsx`](./example/main.tsx) has a toggle,
-a slider, a reorderable list and cards holding stateful components; run it with
-`deno task example` and open <http://localhost:8000>.
+and layers, gotchas), adapted to this port. [`demo/main.tsx`](../../demo/main.tsx) has a toggle, a slider, a dial, a reorderable list and
+cards holding stateful components; try it live on the
+[demo page](https://kuboon.github.io/remix-kbn/#dragology).
 
 ## What differs from upstream
 

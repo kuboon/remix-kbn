@@ -20,8 +20,7 @@
   },
   "tasks": {
     "test": "deno test --allow-read --allow-env",
-    "check": "deno check src",
-    "example": "deno bundle --unstable-bundle --platform browser -o example/main.js example/main.tsx && deno run --allow-net --allow-read jsr:@std/http@^1/file-server example"
+    "check": "deno check src"
   },
   "publish": {
     "include": [

@@ -19,6 +19,17 @@ This is a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces
 | [`ssg`](./packages/ssg)                                         | [`@remix-kbn/ssg`](https://jsr.io/@remix-kbn/ssg)                                         | Static site generation (prerender) for `remix/fetch-router`                                                                            |
 | [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | [`@remix-kbn/ui-pinch-pan`](https://jsr.io/@remix-kbn/ui-pinch-pan)                       | Pinch, pan and wheel as a `@remix-run/component` mixin — reading the gesture and running it, separately                                |
 
+## Demo
+
+[`demo/`](./demo) is one HTML page with live demos of the packages that run in the browser,
+published at <https://kuboon.github.io/remix-kbn/>. `deno bundle` builds it into `dist/`, and
+`.github/workflows/pages.yml` deploys it to GitHub Pages, with a preview for each PR.
+
+```sh
+deno task build
+deno run -R --allow-net jsr:@std/http/file-server dist
+```
+
 ## Claude Code plugins
 
 `plugins/` holds Claude Code plugins whose skills document these packages, kept
