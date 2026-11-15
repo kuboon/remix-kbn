@@ -7,7 +7,8 @@
     "./packages/helper-agent",
     "./packages/mcp",
     "./packages/ssg",
-    "./packages/ui-pinch-pan"
+    "./packages/ui-pinch-pan",
+    "./packages/web-push"
   ],
   "imports": {
     "@remix-run/component": "npm:@remix-run/component@^1.2.0",

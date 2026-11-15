@@ -37,6 +37,7 @@ jobs:
           - mcp
           - ssg
           - ui-pinch-pan
+          - web-push
     name: ${{ matrix.package }}
     permissions:
       contents: write # push the release tag

@@ -18,6 +18,7 @@ This is a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces
 | [`mcp`](./packages/mcp)                                         | [`@remix-kbn/mcp`](https://jsr.io/@remix-kbn/mcp)                                         | Serve an MCP server from a `remix/fetch-router` route                                                                                  |
 | [`ssg`](./packages/ssg)                                         | [`@remix-kbn/ssg`](https://jsr.io/@remix-kbn/ssg)                                         | Static site generation (prerender) for `remix/fetch-router`                                                                            |
 | [`ui-pinch-pan`](./packages/ui-pinch-pan)                       | [`@remix-kbn/ui-pinch-pan`](https://jsr.io/@remix-kbn/ui-pinch-pan)                       | Pinch, pan and wheel as a `@remix-run/component` mixin — reading the gesture and running it, separately                                |
+| [`web-push`](./packages/web-push)                               | [`@remix-kbn/web-push`](https://jsr.io/@remix-kbn/web-push)                               | Web Push for an app that sends its own: send, service worker and subscribe, sharing one message format                                 |
 
 ## Demo
 
