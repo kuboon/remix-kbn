@@ -22,7 +22,7 @@
  * @module
  */
 
-import type { Handle, RemixNode } from '@remix-run/component'
+import { css, type Handle, type RemixNode } from '@remix-run/component'
 import { DEFAULT_LAYOUT, type ScreenLayout, watchScreenLayout } from './mod.ts'
 
 /** One tab. */
@@ -107,14 +107,91 @@ function showBadge(badge: Tab['badge']): badge is number | string {
   return badge !== undefined && badge !== '' && badge !== 0
 }
 
-// Colours come from custom properties, so a stylesheet (or a dark-mode media query) can restyle the
-// bar without touching it. The defaults are iOS's light appearance.
-const TINT = 'var(--tabview-tint, #007aff)'
-const INACTIVE = 'var(--tabview-inactive, #8e8e93)'
-const BAR_BG = 'var(--tabview-bg, rgba(249, 249, 249, 0.94))'
-const SEPARATOR = 'var(--tabview-separator, rgba(60, 60, 67, 0.29))'
+// Liquid Glass, as far as CSS reaches: a floating capsule of frosted, saturated glass that the
+// content scrolls under, lit along its top edge, with a lens behind the selected tab. Every colour
+// is a custom property with light and dark defaults, so a stylesheet can retint it.
+
+const GLASS = css({
+  background: 'var(--tabview-glass, rgba(255, 255, 255, 0.4))',
+  backdropFilter: 'blur(14px) saturate(190%) brightness(1.06)',
+  WebkitBackdropFilter: 'blur(14px) saturate(190%) brightness(1.06)',
+  border: '1px solid var(--tabview-glass-edge, rgba(255, 255, 255, 0.7))',
+  boxShadow: 'var(--tabview-glass-shadow, 0 12px 32px rgba(0, 0, 0, 0.14), ' +
+    '0 2px 6px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9), ' +
+    'inset 0 -1px 1px rgba(255, 255, 255, 0.3))',
+  borderRadius: '999px',
+  boxSizing: 'border-box',
+  // The sheen: light caught by the upper half of the glass.
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: '0',
+    borderRadius: 'inherit',
+    background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 55%)',
+    pointerEvents: 'none',
+  },
+  '@media (prefers-color-scheme: dark)': {
+    background: 'var(--tabview-glass, rgba(44, 44, 48, 0.45))',
+    border: '1px solid var(--tabview-glass-edge, rgba(255, 255, 255, 0.18))',
+    boxShadow: 'var(--tabview-glass-shadow, 0 12px 32px rgba(0, 0, 0, 0.45), ' +
+      'inset 0 1px 1px rgba(255, 255, 255, 0.25))',
+    '&::before': {
+      background:
+        'linear-gradient(to bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 55%)',
+    },
+  },
+  // Without a backdrop filter the glass would be see-through rather than frosted.
+  '@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)))': {
+    background: 'var(--tabview-glass-fallback, rgba(245, 245, 247, 0.94))',
+  },
+})
+
+// Remix puts these rules in a cascade layer, and an unlayered page rule beats any layered one: a site's
+// `a { color: … }` would recolour every tab. So the tab's colour is applied inline, from a custom
+// property these rules set (nothing else sets it), and the same goes for its underline.
+const TAB = css({
+  position: 'relative',
+  zIndex: '1',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '1px',
+  boxSizing: 'border-box',
+  minWidth: '0',
+  padding: '6px 4px',
+  borderRadius: '999px',
+  '--tabview-tab-color': 'var(--tabview-inactive, rgba(0, 0, 0, 0.78))',
+  fontFamily: 'system-ui, -apple-system, sans-serif',
+  fontSize: '10px',
+  fontWeight: '600',
+  lineHeight: '1.2',
+  WebkitTapHighlightColor: 'transparent',
+  transition: 'background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease',
+  // Glass gives under the finger.
+  '&:active': { transform: 'scale(0.94)' },
+  // The lens behind the selected tab.
+  '&[aria-current="page"]': {
+    '--tabview-tab-color': 'var(--tabview-tint, #007aff)',
+    background: 'var(--tabview-selection, rgba(255, 255, 255, 0.6))',
+    boxShadow: 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.08)',
+  },
+  '@media (prefers-color-scheme: dark)': {
+    '--tabview-tab-color': 'var(--tabview-inactive, rgba(255, 255, 255, 0.82))',
+    '&[aria-current="page"]': {
+      '--tabview-tab-color': 'var(--tabview-tint, #0a84ff)',
+      background: 'var(--tabview-selection, rgba(255, 255, 255, 0.14))',
+      boxShadow: 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.12)',
+    },
+  },
+})
+
 const BADGE_BG = 'var(--tabview-badge-bg, #ff3b30)'
 const BADGE_FG = 'var(--tabview-badge-fg, #fff)'
+
+/** How far the floating bar sits from the edge it is on. */
+const GAP = '12px'
+/** What the content keeps clear for the bar, so its last line can scroll out from under it. */
+const CLEARANCE = '84px'
 
 /**
  * A tab bar with the selected tab's content above it, or beside it in a wide window.
@@ -157,29 +234,35 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
       ? currentTabIndex(hrefs, url)
       : -1
 
+    const edge = portrait ? 'bottom' : side
+    const safe = `env(safe-area-inset-${edge})`
+
     const bar = (
       <nav
         aria-label={label}
-        data-tabview-bar={portrait ? 'bottom' : side}
+        data-tabview-bar={edge}
+        mix={[GLASS]}
         style={{
+          position: 'absolute',
+          zIndex: '1',
           display: 'flex',
           flexDirection: portrait ? 'row' : 'column',
-          justifyContent: portrait ? 'space-around' : 'flex-start',
-          gap: portrait ? '0' : '12px',
-          flex: 'none',
-          boxSizing: 'border-box',
-          padding: portrait
-            ? '6px 4px calc(6px + env(safe-area-inset-bottom))'
-            : side === 'left'
-            ? '16px 4px 16px calc(4px + env(safe-area-inset-left))'
-            : '16px calc(4px + env(safe-area-inset-right)) 16px 4px',
-          width: portrait ? '100%' : '84px',
-          background: BAR_BG,
-          backdropFilter: 'saturate(180%) blur(20px)',
-          WebkitBackdropFilter: 'saturate(180%) blur(20px)',
-          [portrait ? 'borderTop' : side === 'left' ? 'borderRight' : 'borderLeft']:
-            `0.5px solid ${SEPARATOR}`,
-          overflow: 'auto',
+          gap: '2px',
+          padding: '4px',
+          overflow: 'visible',
+          ...(portrait
+            ? {
+              bottom: `calc(${GAP} + ${safe})`,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              maxWidth: `calc(100% - 2 * ${GAP})`,
+            }
+            : {
+              top: '50%',
+              transform: 'translateY(-50%)',
+              [side]: `calc(${GAP} + ${safe})`,
+              maxHeight: `calc(100% - 2 * ${GAP})`,
+            }),
         }}
       >
         {tabs.map((tab, index) => {
@@ -188,21 +271,12 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
             <a
               href={tab.href}
               aria-current={active ? 'page' : undefined}
+              mix={[TAB]}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '2px',
-                flex: portrait ? '1 1 0' : 'none',
-                minWidth: '0',
-                padding: '2px 0',
-                color: active ? TINT : INACTIVE,
+                width: portrait ? '72px' : '64px',
+                flex: 'none',
+                color: 'var(--tabview-tab-color)',
                 textDecoration: 'none',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontSize: '10px',
-                fontWeight: '500',
-                lineHeight: '1.2',
-                WebkitTapHighlightColor: 'transparent',
               }}
             >
               <span
@@ -259,19 +333,23 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
       </nav>
     )
 
+    // The content fills the whole view and scrolls under the bar; that is what the glass is for. Its
+    // padding keeps the end of it reachable.
+    const clearance = `calc(${CLEARANCE} + ${safe})`
     return (
       <div
         data-tabview={portrait ? 'portrait' : `landscape-${side}`}
-        style={{
-          display: 'flex',
-          // The bar comes second in the tree, so the content is read first. Reversing the row puts
-          // it on the left.
-          flexDirection: portrait ? 'column' : side === 'left' ? 'row-reverse' : 'row',
-          height: '100%',
-          width: '100%',
-        }}
+        style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden' }}
       >
-        <div style={{ flex: '1 1 auto', minWidth: '0', minHeight: '0', overflow: 'auto' }}>
+        <div
+          style={{
+            position: 'absolute',
+            inset: '0',
+            overflow: 'auto',
+            boxSizing: 'border-box',
+            [`padding${edge[0].toUpperCase()}${edge.slice(1)}`]: clearance,
+          }}
+        >
           {children}
         </div>
         {bar}

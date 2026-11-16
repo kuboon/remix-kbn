@@ -102,6 +102,21 @@ function AppleUiDemo(handle: Handle) {
             <div class='apple-ui-page'>
               <h3>{tabs.find((tab) => tab.href === hash)?.label ?? 'Pick a tab'}</h3>
               <p>{pages[hash] ?? 'The tabs are links; the one matching the URL is selected.'}</p>
+              {
+                // Something colourful to scroll under the glass.
+                Array.from({ length: 12 }, (_, i) => (
+                  <div
+                    class='apple-ui-card'
+                    style={{
+                      background: `linear-gradient(135deg, hsl(${i * 30} 85% 60%), hsl(${
+                        i * 30 + 40
+                      } 85% 55%))`,
+                    }}
+                  >
+                    {`Item ${i + 1}`}
+                  </div>
+                ))
+              }
             </div>
           </TabView>
         </div>

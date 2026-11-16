@@ -66,11 +66,14 @@ describe('TabView', () => {
       <TabView tabs={tabs} layout={{ orientation: 'landscape', side: 'left' }} />,
     )
     assert.match(left, /data-tabview-bar="left"/)
-    assert.match(left, /flex-direction: ?row-reverse/)
+    assert.match(left, /left: ?calc\(12px \+ env\(safe-area-inset-left\)\)/)
+    // The content keeps clear of the bar on that side.
+    assert.match(left, /padding-left: ?calc\(84px \+ env\(safe-area-inset-left\)\)/)
 
     const right = await renderToString(
       <TabView tabs={tabs} layout={{ orientation: 'landscape', side: 'right' }} />,
     )
     assert.match(right, /data-tabview-bar="right"/)
+    assert.match(right, /right: ?calc\(12px \+ env\(safe-area-inset-right\)\)/)
   })
 })

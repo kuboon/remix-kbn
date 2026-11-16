@@ -54,9 +54,16 @@ import { TabView } from '@remix-kbn/apple-ui/tabview'
 - **Badges** take a number or a short string. `0`, `''` and no badge show nothing, like SwiftUI.
 - **Where the bar goes** follows the window (see below): along the bottom of a tall window, down the
   left or right edge of a wide one. Pass `layout` to fix it.
-- **Colours** are custom properties with iOS's light defaults: `--tabview-tint`,
-  `--tabview-inactive`, `--tabview-bg`, `--tabview-separator`, `--tabview-badge-bg`,
-  `--tabview-badge-fg`. Set them on any ancestor, in a dark-mode media query for instance.
+- **It looks like Liquid Glass**, as far as CSS reaches: a capsule floating over the content,
+  frosted and saturated (`backdrop-filter`), lit along its top edge, with a lens behind the selected
+  tab and a slight give when pressed. The content fills the whole view and scrolls under the bar,
+  with padding on the bar's side so its end stays reachable. It follows `prefers-color-scheme`, and
+  falls back to an opaque bar where `backdrop-filter` isn't supported. Real Liquid Glass also bends
+  what is behind it; that refraction has no portable CSS equivalent and isn't attempted.
+- **Colours** are custom properties with light and dark defaults: `--tabview-tint`,
+  `--tabview-inactive`, `--tabview-glass`, `--tabview-glass-edge`, `--tabview-glass-shadow`,
+  `--tabview-glass-fallback`, `--tabview-selection`, `--tabview-badge-bg`, `--tabview-badge-fg`.
+  Set them on any ancestor.
 
 ## `/` — where the window is
 
