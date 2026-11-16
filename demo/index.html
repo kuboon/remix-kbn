@@ -133,6 +133,28 @@
       border-color: var(--accent);
       color: #fff;
     }
+    button[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .apple-ui-frame {
+      height: 360px;
+      max-width: 640px;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      color: #1f2328;
+    }
+    .apple-ui-frame.portrait {
+      max-width: 300px;
+      height: 520px;
+    }
+    .apple-ui-page {
+      padding: 16px 20px;
+    }
     .counter {
       display: flex;
       gap: 8px;
@@ -164,6 +186,7 @@
         <a href="#dragology">@remix-kbn/dragology</a>
         <a href="#ui-pinch-pan">@remix-kbn/ui-pinch-pan</a>
         <a href="#helper-agent">@remix-kbn/helper-agent</a>
+        <a href="#apple-ui">@remix-kbn/apple-ui</a>
       </nav>
     </header>
 
@@ -235,6 +258,19 @@
           missing.
         </p>
         <button type="button" class="primary" id="helper-agent-open">Open the help chat</button>
+      </section>
+
+      <section id="apple-ui">
+        <h2>
+          <a href="https://jsr.io/@remix-kbn/apple-ui"><code>@remix-kbn/apple-ui</code></a>
+        </h2>
+        <p class="lead">
+          <code>/tabview</code>: a tab bar after SwiftUI's <code>TabView</code>, from
+          <code>{ label, icon, badge, href }[]</code>. In a tall window the bar runs along the
+          bottom; in a wide one, down the edge of the screen half the window is on — move this window
+          across your screen, or force a layout below.
+        </p>
+        <div id="apple-ui-demo"></div>
       </section>
     </main>
 

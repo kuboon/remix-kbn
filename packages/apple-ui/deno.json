@@ -1,0 +1,27 @@
+{
+  "name": "@remix-kbn/apple-ui",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/mod.ts",
+    "./tabview": "./src/tabview.tsx"
+  },
+  "imports": {
+    "@remix-run/assert": "npm:@remix-run/assert@^1.0.0",
+    "@remix-run/component": "npm:@remix-run/component@^1.2.0",
+    "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
+  },
+  "tasks": {
+    "test": "deno test",
+    "check": "deno check src"
+  },
+  "publish": {
+    "include": ["src", "README.md", "LICENSE", "deno.json"],
+    "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@remix-run/component",
+    "lib": ["deno.ns", "dom", "dom.iterable", "esnext"]
+  }
+}

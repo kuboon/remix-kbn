@@ -12,6 +12,7 @@ import {
   rotateDeg,
   translate,
 } from '@remix-kbn/dragology'
+import { setupAppleUiDemo } from './apple-ui.tsx'
 import { setupHelperAgentDemo } from './helper-agent.ts'
 import { setupPinchPanDemo } from './pinch-pan.tsx'
 
@@ -208,3 +209,7 @@ setupPinchPanDemo()
 // --- @remix-kbn/helper-agent ---
 
 setupHelperAgentDemo()
+
+// --- @remix-kbn/apple-ui ---
+
+setupAppleUiDemo()
