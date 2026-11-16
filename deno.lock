@@ -4,7 +4,10 @@
     "jsr:@deno/installer-shell-setup@*": "0.3.4",
     "jsr:@deno/loader@0.5": "0.5.0",
     "jsr:@kuboon/chat-element@0.1": "0.1.0",
+    "jsr:@negrel/http-ece@0.7.0": "0.7.0",
+    "jsr:@negrel/webpush@0.5": "0.5.0",
     "jsr:@std/assert@^1.0.19": "1.0.19",
+    "jsr:@std/bytes@1": "1.0.6",
     "jsr:@std/cli@1": "1.0.32",
     "jsr:@std/cli@^1.0.32": "1.0.32",
     "jsr:@std/encoding@1": "1.0.11",
@@ -58,11 +61,29 @@
     "@kuboon/chat-element@0.1.0": {
       "integrity": "fd8b9dd0f8403168718031ac2dd070e56ea1f4ef3c5e488f8c5dc6264cf5cf27"
     },
+    "@negrel/http-ece@0.7.0": {
+      "integrity": "068e61ba6f52da5454051a283cc19621607f8dd6e74d55c01bb365b8c6644076",
+      "dependencies": [
+        "jsr:@std/bytes",
+        "jsr:@std/encoding@1"
+      ]
+    },
+    "@negrel/webpush@0.5.0": {
+      "integrity": "919ed5bf4d676923667c5278093f36ffb2efe7fe2f155b6d32723ea3b73fa693",
+      "dependencies": [
+        "jsr:@negrel/http-ece",
+        "jsr:@std/bytes",
+        "jsr:@std/encoding@1"
+      ]
+    },
     "@std/assert@1.0.19": {
       "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
       "dependencies": [
         "jsr:@std/internal@^1.0.12"
       ]
+    },
+    "@std/bytes@1.0.6": {
+      "integrity": "f6ac6adbd8ccd99314045f5703e23af0a68d7f7e58364b47d2c7f408aeb5820a"
     },
     "@std/cli@1.0.32": {
       "integrity": "188b3a100d6202d64e3f5bd3d799c7fa4f6d77f92cc65eb7f641c1fa0aa92a66"
@@ -506,6 +527,12 @@
           "jsr:@std/testing@1",
           "npm:@remix-run/assert@1",
           "npm:@remix-run/component@^1.2.0"
+        ]
+      },
+      "packages/web-push": {
+        "dependencies": [
+          "jsr:@negrel/webpush@0.5",
+          "jsr:@std/assert@^1.0.19"
         ]
       }
     }
