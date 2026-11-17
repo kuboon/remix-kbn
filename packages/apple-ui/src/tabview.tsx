@@ -22,7 +22,7 @@
  * @module
  */
 
-import { css, type Handle, type RemixNode } from '@remix-run/component'
+import { css, type Handle, ref, type RemixNode } from '@remix-run/component'
 import { DEFAULT_LAYOUT, type ScreenLayout, watchScreenLayout } from './mod.ts'
 
 /** One tab. */
@@ -166,24 +166,49 @@ const TAB = css({
   fontWeight: '600',
   lineHeight: '1.2',
   WebkitTapHighlightColor: 'transparent',
-  transition: 'background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease',
+  transition: 'color 0.3s ease, transform 0.2s ease',
   // Glass gives under the finger.
   '&:active': { transform: 'scale(0.94)' },
-  // The lens behind the selected tab.
   '&[aria-current="page"]': {
     '--tabview-tab-color': 'var(--tabview-tint, #007aff)',
-    background: 'var(--tabview-selection, rgba(255, 255, 255, 0.6))',
-    boxShadow: 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.08)',
   },
   '@media (prefers-color-scheme: dark)': {
     '--tabview-tab-color': 'var(--tabview-inactive, rgba(255, 255, 255, 0.82))',
     '&[aria-current="page"]': {
       '--tabview-tab-color': 'var(--tabview-tint, #0a84ff)',
-      background: 'var(--tabview-selection, rgba(255, 255, 255, 0.14))',
-      boxShadow: 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.12)',
     },
   },
+  '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
 })
+
+// The lens behind the selected tab. There is one, and it slides from tab to tab: the springy curve
+// overshoots a little and settles, the way the glass does.
+const LENS = css({
+  position: 'absolute',
+  top: '4px',
+  left: '4px',
+  zIndex: '0',
+  borderRadius: '999px',
+  pointerEvents: 'none',
+  background: 'var(--tabview-selection, rgba(255, 255, 255, 0.6))',
+  boxShadow: 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.08)',
+  transition: 'transform 0.5s cubic-bezier(0.34, 1.32, 0.5, 1), opacity 0.2s ease',
+  '@media (prefers-color-scheme: dark)': {
+    background: 'var(--tabview-selection, rgba(255, 255, 255, 0.14))',
+    boxShadow: 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.12)',
+  },
+  '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+})
+
+/** A tab's size, fixed so the lens can be placed without measuring. */
+const TAB_WIDTH = { portrait: 72, landscape: 64 }
+const TAB_HEIGHT = 54
+/** The space between tabs. */
+const TAB_GAP = 2
+
+function reducedMotion(): boolean {
+  return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
+}
 
 const BADGE_BG = 'var(--tabview-badge-bg, #ff3b30)'
 const BADGE_FG = 'var(--tabview-badge-fg, #fff)'
@@ -201,6 +226,38 @@ const CLEARANCE = '84px'
 export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
   let layout: ScreenLayout = DEFAULT_LAYOUT
   let url: string | undefined
+
+  // What the last render showed, so a change of tab can be animated from it.
+  let shownIndex: number | undefined
+  let shownEdge: string | undefined
+  let lens: HTMLElement | null = null
+  let content: HTMLElement | null = null
+  const lensRef = ref((node) => void (lens = node as HTMLElement))
+  const contentRef = ref((node) => void (content = node as HTMLElement))
+
+  /** Animates a move from tab `from` to tab `to`. Runs after the DOM shows `to`. */
+  const animateSwitch = (from: number, to: number, portrait: boolean) => {
+    if (reducedMotion()) return
+    const direction = Math.sign(to - from)
+    // The lens stretches along the bar as it goes, and settles back.
+    lens?.animate(
+      [
+        { scale: '1 1' },
+        { scale: portrait ? '1.18 0.9' : '0.9 1.14', offset: 0.35 },
+        { scale: '1 1' },
+      ],
+      { duration: 500, easing: 'ease-out' },
+    )
+    // The new content comes in from the side the selection moved towards.
+    const offset = `${direction * 24}px`
+    content?.animate(
+      [
+        { opacity: 0, translate: portrait ? `${offset} 0` : `0 ${offset}` },
+        { opacity: 1, translate: '0 0' },
+      ],
+      { duration: 320, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' },
+    )
+  }
 
   if (typeof window !== 'undefined') {
     const update = () => void handle.update()
@@ -237,6 +294,20 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
     const edge = portrait ? 'bottom' : side
     const safe = `env(safe-area-inset-${edge})`
 
+    const tabWidth = TAB_WIDTH[portrait ? 'portrait' : 'landscape']
+    const step = (portrait ? tabWidth : TAB_HEIGHT) + TAB_GAP
+    const lensIndex = Math.max(current, 0)
+    // Moving the bar to another edge isn't a change of tab: put the lens straight in place.
+    const jump = shownEdge !== undefined && shownEdge !== edge
+    if (
+      shownIndex !== undefined && shownIndex !== current && shownIndex >= 0 && current >= 0 && !jump
+    ) {
+      const from = shownIndex
+      handle.queueTask(() => animateSwitch(from, current, portrait))
+    }
+    shownIndex = current
+    shownEdge = edge
+
     const bar = (
       <nav
         aria-label={label}
@@ -247,7 +318,7 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
           zIndex: '1',
           display: 'flex',
           flexDirection: portrait ? 'row' : 'column',
-          gap: '2px',
+          gap: `${TAB_GAP}px`,
           padding: '4px',
           overflow: 'visible',
           ...(portrait
@@ -265,6 +336,20 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
             }),
         }}
       >
+        <span
+          aria-hidden='true'
+          data-tabview-lens
+          mix={[LENS, lensRef]}
+          style={{
+            width: `${tabWidth}px`,
+            height: `${TAB_HEIGHT}px`,
+            transform: portrait
+              ? `translateX(${lensIndex * step}px)`
+              : `translateY(${lensIndex * step}px)`,
+            opacity: current < 0 ? '0' : '1',
+            ...(jump ? { transition: 'none' } : {}),
+          }}
+        />
         {tabs.map((tab, index) => {
           const active = index === current
           return (
@@ -273,7 +358,9 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
               aria-current={active ? 'page' : undefined}
               mix={[TAB]}
               style={{
-                width: portrait ? '72px' : '64px',
+                width: `${tabWidth}px`,
+                height: `${TAB_HEIGHT}px`,
+                justifyContent: 'center',
                 flex: 'none',
                 color: 'var(--tabview-tab-color)',
                 textDecoration: 'none',
@@ -342,6 +429,7 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
         style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden' }}
       >
         <div
+          mix={[contentRef]}
           style={{
             position: 'absolute',
             inset: '0',

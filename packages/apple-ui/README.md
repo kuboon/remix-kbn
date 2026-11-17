@@ -56,7 +56,9 @@ import { TabView } from '@remix-kbn/apple-ui/tabview'
   left or right edge of a wide one. Pass `layout` to fix it.
 - **It looks like Liquid Glass**, as far as CSS reaches: a capsule floating over the content,
   frosted and saturated (`backdrop-filter`), lit along its top edge, with a lens behind the selected
-  tab and a slight give when pressed. The content fills the whole view and scrolls under the bar,
+  tab and a slight give when pressed. Switching tabs slides the lens to the new one with a
+  little overshoot, stretching it along the bar as it goes, and brings the new content in from the
+  side the selection moved towards. Nothing animates under `prefers-reduced-motion: reduce`. The content fills the whole view and scrolls under the bar,
   with padding on the bar's side so its end stays reachable. It follows `prefers-color-scheme`, and
   falls back to an opaque bar where `backdrop-filter` isn't supported. Real Liquid Glass also bends
   what is behind it; that refraction has no portable CSS equivalent and isn't attempted.

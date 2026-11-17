@@ -61,6 +61,16 @@ describe('TabView', () => {
     assert.match(links[2], /data-tabview-badge[^>]*>!</)
   })
 
+  it('puts the one lens behind the selected tab', async () => {
+    const html = await renderToString(<TabView tabs={tabs} selected='/account' />)
+    assert.equal((html.match(/data-tabview-lens/g) ?? []).length, 1)
+    // Third tab: two steps of a 72px tab and a 2px gap.
+    assert.match(html, /data-tabview-lens[^>]*translateX\(148px\)/)
+
+    const none = await renderToString(<TabView tabs={tabs} selected='/elsewhere' />)
+    assert.match(none, /data-tabview-lens[^>]*opacity: ?0/)
+  })
+
   it('puts the bar on the side of a landscape layout', async () => {
     const left = await renderToString(
       <TabView tabs={tabs} layout={{ orientation: 'landscape', side: 'left' }} />,
