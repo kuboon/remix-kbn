@@ -71,6 +71,14 @@ describe('TabView', () => {
     assert.match(none, /data-tabview-lens[^>]*opacity: ?0/)
   })
 
+  it('keeps a landscape lens round, so it fits the rail', async () => {
+    const html = await renderToString(
+      <TabView tabs={tabs} selected='/sent' layout={{ orientation: 'landscape', side: 'left' }} />,
+    )
+    assert.match(html, /data-tabview-lens[^>]*width: ?64px[^>]*height: ?64px/)
+    assert.match(html, /data-tabview-lens[^>]*translateY\(66px\)/)
+  })
+
   it('puts the bar on the side of a landscape layout', async () => {
     const left = await renderToString(
       <TabView tabs={tabs} layout={{ orientation: 'landscape', side: 'left' }} />,

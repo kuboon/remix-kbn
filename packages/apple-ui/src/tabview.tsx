@@ -200,9 +200,20 @@ const LENS = css({
   '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
 })
 
-/** A tab's size, fixed so the lens can be placed without measuring. */
-const TAB_WIDTH = { portrait: 72, landscape: 64 }
-const TAB_HEIGHT = 54
+/**
+ * A tab's size, fixed so the lens can be placed without measuring.
+ *
+ * The lens and the bar are both capsules, and the lens sits inside the bar by its padding and
+ * border (5px), so its ends run parallel to the bar's only if they are concentric: the lens's radius
+ * (half its narrow side) must be the bar's less that inset. A tab's size across the bar is what
+ * makes the bar's thickness, so that holds by construction once the lens is as wide across as the
+ * tab. Along a landscape rail, a tab is as tall as it is wide, so its lens is a circle that fits
+ * the rail's round ends; a 64×54 lens there had corners tighter than the ends around it.
+ */
+const TAB_SIZE = {
+  portrait: { width: 72, height: 54 },
+  landscape: { width: 64, height: 64 },
+}
 /** The space between tabs. */
 const TAB_GAP = 2
 
@@ -294,8 +305,8 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
     const edge = portrait ? 'bottom' : side
     const safe = `env(safe-area-inset-${edge})`
 
-    const tabWidth = TAB_WIDTH[portrait ? 'portrait' : 'landscape']
-    const step = (portrait ? tabWidth : TAB_HEIGHT) + TAB_GAP
+    const { width: tabWidth, height: tabHeight } = TAB_SIZE[portrait ? 'portrait' : 'landscape']
+    const step = (portrait ? tabWidth : tabHeight) + TAB_GAP
     const lensIndex = Math.max(current, 0)
     // Moving the bar to another edge isn't a change of tab: put the lens straight in place.
     const jump = shownEdge !== undefined && shownEdge !== edge
@@ -342,7 +353,7 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
           mix={[LENS, lensRef]}
           style={{
             width: `${tabWidth}px`,
-            height: `${TAB_HEIGHT}px`,
+            height: `${tabHeight}px`,
             transform: portrait
               ? `translateX(${lensIndex * step}px)`
               : `translateY(${lensIndex * step}px)`,
@@ -359,7 +370,7 @@ export function TabView(handle: Handle<TabViewProps>): () => RemixNode {
               mix={[TAB]}
               style={{
                 width: `${tabWidth}px`,
-                height: `${TAB_HEIGHT}px`,
+                height: `${tabHeight}px`,
                 justifyContent: 'center',
                 flex: 'none',
                 color: 'var(--tabview-tab-color)',
