@@ -29,6 +29,7 @@ jobs:
       fail-fast: false
       matrix:
         package:
+          - apple-ui
           - assets-deno
           - data-table-d1
           - data-table-sqlite-turso

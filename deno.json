@@ -1,5 +1,6 @@
 {
   "workspace": [
+    "./packages/apple-ui",
     "./packages/assets-deno",
     "./packages/data-table-d1",
     "./packages/data-table-sqlite-turso",
