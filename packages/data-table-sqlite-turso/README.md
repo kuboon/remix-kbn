@@ -7,7 +7,7 @@ Turso / libSQL database for [`remix/data-table`](https://github.com/remix-run/re
 
 Turso speaks the SQLite dialect but exposes an async, promise-based client, so the synchronous [`data-table-sqlite`](https://github.com/remix-run/remix/tree/main/packages/data-table-sqlite) database cannot drive it. This package awaits every client call, which makes it a good fit for remote Turso databases, embedded replicas, and other libSQL deployments.
 
-Requires `@remix-run/data-table@^0.4.0` (Remix v3 `beta.6` or later).
+Requires `@remix-run/data-table@^1.1.0` (Remix v3 `3.3.0`).
 
 ## Features
 

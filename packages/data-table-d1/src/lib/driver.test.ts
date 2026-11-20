@@ -1,6 +1,6 @@
 import * as assert from '@remix-run/assert'
 import { afterEach, beforeEach, describe, it } from '@std/testing/bdd'
-import { column, eq, table } from '@remix-run/data-table'
+import { column, eq, rawSql, sql, table } from '@remix-run/data-table'
 
 import { createD1Database, type D1BackedDatabase } from './database.ts'
 import { createLocalD1, type LocalD1 } from './local.ts'
@@ -23,7 +23,18 @@ const logs = table({
   },
 })
 
+const settings = table({
+  name: 'settings',
+  columns: {
+    id: column.integer(),
+    data: column.json(),
+    enabled: column.boolean(),
+    seen_at: column.timestamp(),
+  },
+})
+
 const schema = `
+  create table settings (id integer primary key, data text, enabled integer, seen_at text);
   create table accounts (id integer primary key, email text not null unique, status text not null);
   create table logs (
     id integer primary key,
@@ -57,6 +68,35 @@ describe('d1 driver', () => {
     assert.equal(await db.query(accounts).where(eq(accounts.status, 'inactive')).exists(), true)
     assert.equal(await db.delete(accounts, created.id), true)
     assert.equal(await db.count(accounts), 0)
+  })
+
+  it('reads json, boolean, and timestamp columns back as JavaScript values', async () => {
+    let seenAt = new Date('2026-11-20T01:02:03.456Z')
+    await db.create(settings, { id: 1, data: { theme: 'dark' }, enabled: true, seen_at: seenAt })
+
+    let row = await db.find(settings, 1)
+    assert.deepEqual(row?.data, { theme: 'dark' })
+    assert.equal(row?.enabled, true)
+    assert.ok(row?.seen_at instanceof Date)
+    assert.equal((row?.seen_at as Date).toISOString(), seenAt.toISOString())
+
+    let stored = await db.exec(rawSql('select data, enabled, seen_at from settings'))
+    assert.deepEqual(stored.rows?.[0], {
+      data: '{"theme":"dark"}',
+      enabled: 1,
+      seen_at: '2026-11-20 01:02:03.456',
+    })
+
+    assert.equal(await db.query(settings).where(eq(settings.seen_at, seenAt)).exists(), true)
+  })
+
+  it('expands an array interpolated into sql into one parameter per item', async () => {
+    await db.create(accounts, { id: 1, email: 'a@example.com', status: 'active' })
+    await db.create(accounts, { id: 2, email: 'b@example.com', status: 'active' })
+    await db.create(accounts, { id: 3, email: 'c@example.com', status: 'active' })
+
+    let result = await db.exec(sql`select id from accounts where id in ${[1, 3]} order by id`)
+    assert.deepEqual(result.rows, [{ id: 1 }, { id: 3 }])
   })
 
   it('reports affectedRows and insertId', async () => {

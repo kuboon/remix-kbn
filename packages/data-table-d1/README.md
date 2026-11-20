@@ -4,7 +4,7 @@
 
 D1 speaks the SQLite dialect, but it is reached through a Worker binding (`env.DB`) rather than a connection, and it has no interactive transactions — only `batch()`. This package drives `data-table` through that binding, and turns `transaction()` into a batch.
 
-Requires `@remix-run/data-table@^1.0.0` (Remix v3 `3.0.0`).
+Requires `@remix-run/data-table@^1.1.0` (Remix v3 `3.3.0`).
 
 ## Installation
 

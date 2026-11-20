@@ -1,6 +1,6 @@
 {
   "name": "@remix-kbn/data-table-d1",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
@@ -8,10 +8,10 @@
     "./cli": "./src/cli.ts"
   },
   "imports": {
-    "@remix-run/data-table": "npm:@remix-run/data-table@^1.0.0",
-    "@remix-run/data-table/cli": "npm:@remix-run/data-table@^1.0.0/cli",
-    "@remix-run/data-table/migrations/node": "npm:@remix-run/data-table@^1.0.0/migrations/node",
-    "@remix-run/data-table/sql-helpers": "npm:@remix-run/data-table@^1.0.0/sql-helpers",
+    "@remix-run/data-table": "npm:@remix-run/data-table@^1.1.0",
+    "@remix-run/data-table/cli": "npm:@remix-run/data-table@^1.1.0/cli",
+    "@remix-run/data-table/migrations/node": "npm:@remix-run/data-table@^1.1.0/migrations/node",
+    "@remix-run/data-table/sql-helpers": "npm:@remix-run/data-table@^1.1.0/sql-helpers",
     "@remix-run/assert": "npm:@remix-run/assert@^1.0.0",
     "@std/testing/bdd": "jsr:@std/testing@^1/bdd"
   },

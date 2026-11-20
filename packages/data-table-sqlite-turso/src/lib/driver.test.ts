@@ -1,6 +1,7 @@
 import * as assert from '@remix-run/assert'
 import { describe, it } from '@std/testing/bdd'
-import { column, table } from '@remix-run/data-table'
+import { column, eq, rawSql, sql, table } from '@remix-run/data-table'
+import { createClient } from '@libsql/client'
 
 import { createTursoDatabase } from './database.ts'
 import { TursoDriver } from './driver.ts'
@@ -577,5 +578,50 @@ describe('turso driver', () => {
     driver.close()
 
     assert.equal(closed, 0)
+  })
+})
+
+describe('turso driver against libSQL', () => {
+  const settings = table({
+    name: 'settings',
+    columns: {
+      id: column.integer(),
+      data: column.json(),
+      enabled: column.boolean(),
+      seen_at: column.timestamp(),
+    },
+  })
+
+  it('reads json, boolean, and timestamp columns back as JavaScript values', async () => {
+    let client = createClient({ url: ':memory:' })
+    try {
+      let db = createTursoDatabase(client)
+      await db.executeScript(
+        'create table settings (id integer primary key, data text, enabled integer, seen_at text)',
+      )
+
+      let seenAt = new Date('2026-11-20T01:02:03.456Z')
+      await db.create(settings, { id: 1, data: { theme: 'dark' }, enabled: true, seen_at: seenAt })
+
+      let row = await db.find(settings, 1)
+      assert.deepEqual(row?.data, { theme: 'dark' })
+      assert.equal(row?.enabled, true)
+      assert.ok(row?.seen_at instanceof Date)
+      assert.equal((row?.seen_at as Date).toISOString(), seenAt.toISOString())
+
+      let stored = await db.exec(rawSql('select data, enabled, seen_at from settings'))
+      assert.deepEqual(stored.rows?.[0], {
+        data: '{"theme":"dark"}',
+        enabled: 1,
+        seen_at: '2026-11-20 01:02:03.456',
+      })
+
+      assert.equal(await db.query(settings).where(eq(settings.seen_at, seenAt)).exists(), true)
+
+      let ids = await db.exec(sql`select id from settings where id in ${[1, 2]}`)
+      assert.deepEqual(ids.rows, [{ id: 1 }])
+    } finally {
+      client.close()
+    }
   })
 })
