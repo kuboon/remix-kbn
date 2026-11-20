@@ -29,10 +29,12 @@
     "npm:@libsql/client@~0.17.4": "0.17.4",
     "npm:@modelcontextprotocol/server@2": "2.0.0",
     "npm:@remix-run/assert@1": "1.0.0",
-    "npm:@remix-run/component@^1.1.0": "1.2.0",
-    "npm:@remix-run/component@^1.2.0": "1.2.0",
-    "npm:@remix-run/data-table@1": "1.0.0",
-    "npm:@remix-run/fetch-router@1": "1.0.0",
+    "npm:@remix-run/component@^1.1.0": "1.3.0",
+    "npm:@remix-run/component@^1.2.0": "1.3.0",
+    "npm:@remix-run/component@^1.3.0": "1.3.0",
+    "npm:@remix-run/data-table@^1.1.0": "1.1.0",
+    "npm:@remix-run/fetch-router@1": "1.0.1",
+    "npm:@remix-run/fetch-router@^1.0.1": "1.0.1",
     "npm:@types/d3-color@^3.1.3": "3.1.3",
     "npm:@types/d3-delaunay@^6.0.4": "6.0.4",
     "npm:@types/d3-ease@^3.0.2": "3.0.2",
@@ -264,17 +266,17 @@
     "@remix-run/assert@1.0.0": {
       "integrity": "sha512-ygVYpSz7uc7Wg72Ty0rN29J9Qtna30BVwwHF8K/M8WcSt28peoe8jRAAivUQe+7haSizemwUL3E7UxTCBycW9w=="
     },
-    "@remix-run/component@1.2.0": {
-      "integrity": "sha512-LyPmhklZc9HQkzPYJH82vHSAq3OKC1fGmNwjS+qMYehdc7Dh0qPWI/3+H3x/J068hZ2WoV1fREGQvXcA16TTMA==",
+    "@remix-run/component@1.3.0": {
+      "integrity": "sha512-myId7o6wr5ZmoO1hrmwgTTO6j1tR6ubcekN9SvLpwk1x7dJkvrfSbkzBmYcyOiYoan4nm0Ft87yJ6OT0CvH3oQ==",
       "dependencies": [
         "@types/dom-navigation"
       ]
     },
-    "@remix-run/data-table@1.0.0": {
-      "integrity": "sha512-aFY0MxCH7NZp8HEJttGXsMQhdL5XeK9s34hW5stGdFfRST8WbGTApHMq78jahMBO6LaWgP/PNZRk9Mjr1GUYoA=="
+    "@remix-run/data-table@1.1.0": {
+      "integrity": "sha512-2/TvnVjKck+ykIi2NLHeD8Q0tGlOTYEeh3RHOmxqvxJPp9KPuGEoR+JjawiavGPFpm3g9AsJqvoDLXMPwUMnuw=="
     },
-    "@remix-run/fetch-router@1.0.0": {
-      "integrity": "sha512-rvtg1Gtz1oJKL4nk1Jlp5Qh0auTYQBrcaGr7dtSse6iERcEWdRFVqtXWuNYXuwJwXieJE179ZKZRxXEyyTq9og==",
+    "@remix-run/fetch-router@1.0.1": {
+      "integrity": "sha512-H/XUqYS0SqLy9Vs2l+7/wrWfA85wOfdpwtTnnmw/7RD7rgX8/8VaGN7Rua03MLjY5fAV70HtHwynWqGp4/LwtQ==",
       "dependencies": [
         "@remix-run/route-pattern"
       ]
@@ -451,8 +453,8 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:@remix-run/component@^1.2.0",
-      "npm:@remix-run/fetch-router@1"
+      "npm:@remix-run/component@^1.3.0",
+      "npm:@remix-run/fetch-router@^1.0.1"
     ],
     "members": {
       "packages/apple-ui": {
@@ -477,7 +479,7 @@
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:@remix-run/assert@1",
-          "npm:@remix-run/data-table@1"
+          "npm:@remix-run/data-table@^1.1.0"
         ]
       },
       "packages/data-table-sqlite-turso": {
@@ -485,7 +487,7 @@
           "jsr:@std/testing@1",
           "npm:@libsql/client@~0.17.4",
           "npm:@remix-run/assert@1",
-          "npm:@remix-run/data-table@1"
+          "npm:@remix-run/data-table@^1.1.0"
         ]
       },
       "packages/dragology": {

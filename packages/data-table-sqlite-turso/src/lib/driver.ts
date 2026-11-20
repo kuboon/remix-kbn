@@ -1,4 +1,5 @@
 import type {
+  ColumnDefinition,
   DatabaseCapabilities,
   DatabaseDriver,
   DataManipulationOperation,
@@ -75,6 +76,38 @@ export class TursoDriver implements DatabaseDriver<'sqlite'> {
   compileSql(operation: DataManipulationOperation): SqlStatement[] {
     let compiled = compileSqliteOperation(operation)
     return [{ text: compiled.text, values: compiled.values }]
+  }
+
+  /**
+   * Decodes values SQLite stores in a different form: JSON text, integer booleans, and
+   * timestamp text. `Database` calls this for table query and `returning` rows, so rows have the
+   * same JavaScript shape as on the first-party adapters; `db.exec()` results are left as-is.
+   * @param value Value read from the database.
+   * @param column Definition of the column the value was read from.
+   * @returns The decoded value.
+   */
+  decodeValue(value: unknown, column: ColumnDefinition): unknown {
+    if (column.type === 'boolean' && (typeof value === 'number' || typeof value === 'bigint')) {
+      return Number(value) !== 0
+    }
+
+    if (column.type === 'json' && typeof value === 'string') {
+      try {
+        return JSON.parse(value)
+      } catch {
+        // Leave text written before JSON columns were serialized as it was stored.
+        return value
+      }
+    }
+
+    if (column.type === 'timestamp' && typeof value === 'string') {
+      // Only decode text in the form this driver binds, so a Date read back binds as the same
+      // text and still matches the stored value in filters and key lookups.
+      let date = new Date(value.replace(' ', 'T') + 'Z')
+      return !Number.isNaN(date.getTime()) && formatTimestamp(date) === value ? date : value
+    }
+
+    return value
   }
 
   /**
@@ -322,7 +355,36 @@ function normalizeRows(rows: unknown[]): Record<string, unknown>[] {
 }
 
 function normalizeStatementValues(values: unknown[]): InValue[] {
-  return values.map((value) => (value === undefined ? null : value)) as InValue[]
+  return values.map((value) => {
+    if (value === undefined) return null
+    if (typeof value === 'boolean') return value ? 1 : 0
+    if (value !== null && typeof value === 'object') return normalizeObjectValue(value)
+    return value
+  }) as InValue[]
+}
+
+/**
+ * Binds a `Date` as UTC text in SQLite's own `current_timestamp` format, and refuses any other
+ * object: every parameter binds as exactly one value, so JSON must already be serialized.
+ */
+function normalizeObjectValue(value: object): unknown {
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) {
+      throw new TypeError('SQLite Date parameters must be valid dates')
+    }
+    return formatTimestamp(value)
+  }
+  if (!ArrayBuffer.isView(value) && !(value instanceof ArrayBuffer)) {
+    throw new TypeError('SQLite object parameters must be Date or typed array instances')
+  }
+  return value
+}
+
+// Match SQLite's own UTC `current_timestamp` format so stored values compare and sort together.
+// Whole seconds omit `.000`, which would otherwise sort after the same second.
+function formatTimestamp(date: Date): string {
+  let text = date.toISOString().replace('T', ' ').replace('Z', '')
+  return date.getUTCMilliseconds() === 0 ? text.slice(0, -4) : text
 }
 
 function normalizeCountRows(rows: Record<string, unknown>[]): Record<string, unknown>[] {

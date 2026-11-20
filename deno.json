@@ -12,8 +12,8 @@
     "./packages/web-push"
   ],
   "imports": {
-    "@remix-run/component": "npm:@remix-run/component@^1.2.0",
-    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^1.0.0"
+    "@remix-run/component": "npm:@remix-run/component@^1.3.0",
+    "@remix-run/fetch-router": "npm:@remix-run/fetch-router@^1.0.1"
   },
   "minimumDependencyAge": {
     "age": "P1D",
